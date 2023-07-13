@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node.js": "^0.0.1-security",
+    "tailwindcss": "^3.3.3"
+  }
+}
