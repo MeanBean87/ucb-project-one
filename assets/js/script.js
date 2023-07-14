@@ -70,13 +70,13 @@ const fetchCalorieNinjas = async (query) => {
 
 //====================================================================================================
 //TODO: Convert feet and inches to base inches ie 6' 1' inches = 73.
+const convertImpHeightToBaseInches = (feet, inches) => {
+  return feet * 12 + inches;
+}
 
-
-
-
-
-
-
+const convertImpHeightToMetric = (inches) => {
+  return inches * 2.54;
+};
 
 
 
@@ -93,7 +93,12 @@ const fetchCalorieNinjas = async (query) => {
 
 //====================================================================================================
 // TODO: Function to calculate BMR for male.
+const calculateBMRMale = (weight, height, age, sex) => {
+  let 
 
+
+
+ };
 
 
 
