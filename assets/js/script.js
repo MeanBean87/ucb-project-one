@@ -46,6 +46,15 @@ const fetchCalorieNinjas = async (query) => {
 };
 
 //TODO: create object to store activity level and multiplier.
+const activityLevel = {
+  sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
+  LightlyActive: 1.375, // (light exercise 1-3 days / week)
+  ModeratelyActive:  1.55, //(moderate exercise 3-5 days / week
+  VeryActive: 1.725, //(heavy exercise 5-7 days / week)
+  ExtremelyActive: 1.9, //(very heavy exercise, hard labor job, training 2x / day)
+};
+
+  
 
 
 
@@ -120,53 +129,28 @@ const calculateBMRMale = (weight, height, age, sex) => {
 
 
 //====================================================================================================
-//TODO: Function to calculate BMR for female.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//====================================================================================================
 //TODO: Create function to convert imperial inches to metric centimeters.
+function convertInchesToCentimeters(inches) {
+  return inches * 2.54;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var heightInCentimeters = convertInchesToCentimeters(inches);
 
 
 //====================================================================================================
 //TODO: Create function to convert imperial pounds to metric kilograms.
+function convertPoundsToKilograms(pounds) {
+  return pounds * 0.45359237;
+}
+var weightInKilograms = convertPoundsToKilograms(pounds);
 
+
+//====================================================================================================
+//TODO: Function to calculate BMR for female.
+//Women BMR = 655 + (9.6 X weight in kg) + (1.8 x height in cm) – (4.7 x age in yrs)
+function femaleBMR(weight, height, age) {
+  return 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
+}
+
+var femaleBMRResult = femaleBMR(weightInKilograms, heightInCentimeters, ageInYears);
+console.log(femaleBMRResult);
