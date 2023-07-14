@@ -115,53 +115,28 @@ const fetchCalorieNinjas = async (query) => {
 
 
 //====================================================================================================
-//TODO: Function to calculate BMR for female.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//====================================================================================================
 //TODO: Create function to convert imperial inches to metric centimeters.
+function convertInchesToCentimeters(inches) {
+  return inches * 2.54;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+var heightInCentimeters = convertInchesToCentimeters(inches);
 
 
 //====================================================================================================
 //TODO: Create function to convert imperial pounds to metric kilograms.
+function convertPoundsToKilograms(pounds) {
+  return pounds * 0.45359237;
+}
+var weightInKilograms = convertPoundsToKilograms(pounds);
 
+
+//====================================================================================================
+//TODO: Function to calculate BMR for female.
+//Women BMR = 655 + (9.6 X weight in kg) + (1.8 x height in cm) – (4.7 x age in yrs)
+function femaleBMR(weight, height, age) {
+  return 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
+}
+
+var femaleBMRResult = femaleBMR(weightInKilograms, heightInCentimeters, ageInYears);
+console.log(femaleBMRResult);
