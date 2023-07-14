@@ -46,6 +46,15 @@ const fetchCalorieNinjas = async (query) => {
 };
 
 //TODO: create object to store activity level and multiplier.
+const activityLevel = {
+  sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
+  LightlyActive: 1.375, // (light exercise 1-3 days / week)
+  ModeratelyActive:  1.55, //(moderate exercise 3-5 days / week
+  VeryActive: 1.725, //(heavy exercise 5-7 days / week)
+  ExtremelyActive: 1.9, //(very heavy exercise, hard labor job, training 2x / day)
+};
+
+  
 
 
 
