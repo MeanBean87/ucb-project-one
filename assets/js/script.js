@@ -1,3 +1,5 @@
+import { values as mealValues } from "./mealValues.js";
+
 //TODO: Refine parameters to suit our needs.
 const fetchMealDbObj = async (query) => {
   const url =
@@ -82,3 +84,32 @@ const calculateTDEE = (weight, height, age, gender, activityLevel) => {
     return calculateMaleBMR(weight, height, age) * activityLevel;
   }
 };
+
+const caloriesPerMeal = (calories, numberOfMeals) => {
+  return calories / numberOfMeals;
+};
+
+//================================================================================================
+
+const fetchEdamamObj = async (queryString) => {
+  const appId = `ea339611`;
+  const appKey = `40023aebe29c8284c820e11ded63b70f`;
+  const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${encodeURIComponent(
+    queryString
+  )}&app_id=${appId}&app_key=${appKey}`;
+
+  try {
+    const response = await fetch(`${url}${query}`);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      throw new Error(`Error: ${response.statusText} (${response.status})`);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
