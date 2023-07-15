@@ -1,7 +1,6 @@
 const mainContainer = document.getElementById("main-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
 
-
 //TODO: Refine parameters to suit our needs.
 const fetchMealDbObj = async (query) => {
   const url =
@@ -70,12 +69,18 @@ const calculateMaleBMR = (weight, height, age) => {
 
 const calculateTDEE = (weight, feet, inches, age, gender, activityLevel) => {
   let convertedWeight = convertPoundsToKilograms(weight);
-  let convertedHeight = convertInchesToCentimeters(convertImpHeightToBaseInches(feet, inches));
+  let convertedHeight = convertInchesToCentimeters(
+    convertImpHeightToBaseInches(feet, inches)
+  );
 
   if (gender === "Female") {
-    return calculateFemaleBMR(convertedWeight, convertedHeight, age) * activityLevel;
+    console.log(
+      calculateFemaleBMR(convertedWeight, convertedHeight, age) * activityLevel
+    );
   } else {
-    return calculateMaleBMR(convertedWeight, convertedHeight, age) * activityLevel;
+    console.log(
+      calculateMaleBMR(convertedWeight, convertedHeight, age) * activityLevel
+    );
   }
 };
 
@@ -159,18 +164,25 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireAgeInput.setAttribute("type", "number");
   tdeeQuestionnaireAgeInput.setAttribute("id", "tdee-questionnaire-age");
   tdeeQuestionnaireAgeInput.setAttribute("class", "tdee-questionnaire-age");
+  tdeeQuestionnaireAgeInput.setAttribute("placeholder", "Age in years");
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAgeInput);
 
   const tdeeQuestionnaireGender = document.createElement("label");
   tdeeQuestionnaireGender.setAttribute("for", "tdee-questionnaire-gender");
   tdeeQuestionnaireGender.setAttribute("id", "tdee-questionnaire-gender-label");
-  tdeeQuestionnaireGender.setAttribute("class", "tdee-questionnaire-gender-label");
+  tdeeQuestionnaireGender.setAttribute(
+    "class",
+    "tdee-questionnaire-gender-label"
+  );
   tdeeQuestionnaireGender.textContent = "Please select your gender: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireGender);
 
   const tdeeQuestionnaireGenderInput = document.createElement("select");
   tdeeQuestionnaireGenderInput.setAttribute("id", "tdee-questionnaire-gender");
-  tdeeQuestionnaireGenderInput.setAttribute("class", "tdee-questionnaire-gender");
+  tdeeQuestionnaireGenderInput.setAttribute(
+    "class",
+    "tdee-questionnaire-gender"
+  );
 
   const options = ["Male", "Female", "Other"];
   for (const option of options) {
@@ -179,13 +191,7 @@ const createTDEEQuestionnaire = () => {
     genderOption.textContent = option;
     tdeeQuestionnaireGenderInput.appendChild(genderOption);
   }
-
-  const tdeeQuestionnaireHeight = document.createElement("label");
-  tdeeQuestionnaireHeight.setAttribute("for", "tdee-questionnaire-height");
-  tdeeQuestionnaireHeight.setAttribute("id", "tdee-questionnaire-height-label");
-  tdeeQuestionnaireHeight.setAttribute("class", "tdee-questionnaire-height-label");
-  tdeeQuestionnaireHeight.textContent = "Height: ";
-  tdeeQuestionnaire.appendChild(tdeeQuestionnaireHeight);
+  tdeeQuestionnaire.appendChild(tdeeQuestionnaireGenderInput);
 
   const tdeeQuestionnaireHeightInput = document.createElement("div");
   tdeeQuestionnaireHeightInput.setAttribute("id", "tdee-questionnaire-height");
@@ -195,10 +201,21 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireHeightInput);
 
+  const tdeeQuestionnaireHeight = document.createElement("label");
+  tdeeQuestionnaireHeight.setAttribute("for", "tdee-questionnaire-height");
+  tdeeQuestionnaireHeight.setAttribute("id", "tdee-questionnaire-height-label");
+  tdeeQuestionnaireHeight.setAttribute(
+    "class",
+    "tdee-questionnaire-height-label"
+  );
+  tdeeQuestionnaireHeight.textContent = "Height: ";
+  tdeeQuestionnaire.appendChild(tdeeQuestionnaireHeightInput);
+
   const tdeeQuestionnaireFeetInput = document.createElement("input");
   tdeeQuestionnaireFeetInput.setAttribute("type", "number");
   tdeeQuestionnaireFeetInput.setAttribute("id", "tdee-questionnaire-feet");
   tdeeQuestionnaireFeetInput.setAttribute("class", "tdee-questionnaire-feet");
+  tdeeQuestionnaireFeetInput.setAttribute("placeholder", "Feet");
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireFeetInput);
 
   const tdeeQuestionnaireInchesInput = document.createElement("input");
@@ -208,12 +225,16 @@ const createTDEEQuestionnaire = () => {
     "class",
     "tdee-questionnaire-inches"
   );
+  tdeeQuestionnaireInchesInput.setAttribute("placeholder", "Inches");
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireInchesInput);
 
   const tdeeQuestionnaireWeight = document.createElement("label");
   tdeeQuestionnaireWeight.setAttribute("for", "tdee-questionnaire-weight");
   tdeeQuestionnaireWeight.setAttribute("id", "tdee-questionnaire-weight-label");
-  tdeeQuestionnaireWeight.setAttribute("class", "tdee-questionnaire-weight-label");
+  tdeeQuestionnaireWeight.setAttribute(
+    "class",
+    "tdee-questionnaire-weight-label"
+  );
   tdeeQuestionnaireWeight.textContent = "Weight: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeight);
 
@@ -224,6 +245,7 @@ const createTDEEQuestionnaire = () => {
     "class",
     "tdee-questionnaire-weight"
   );
+  tdeeQuestionnaireWeightInput.setAttribute("placeholder", "Weight in lbs");
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeightInput);
 
   const tdeeQuestionnaireActivityLevel = document.createElement("label");
@@ -244,11 +266,17 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireActivityLevel);
 
   const tdeeQuestionnaireActivityLevelInput = document.createElement("select");
-  tdeeQuestionnaireActivityLevelInput.setAttribute("id", "tdee-questionnaire-activity-level");
-  tdeeQuestionnaireActivityLevelInput.setAttribute("class", "tdee-questionnaire-activity-level");
+  tdeeQuestionnaireActivityLevelInput.setAttribute(
+    "id",
+    "tdee-questionnaire-activity-level"
+  );
+  tdeeQuestionnaireActivityLevelInput.setAttribute(
+    "class",
+    "tdee-questionnaire-activity-level"
+  );
 
   const activityLevel = {
-    "Sedentary": 1.2, //(little to no exercise + work a desk job) = 1.2
+    Sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
     "Lightly Active": 1.375, // (light exercise 1-3 days / week)
     "Moderately Active": 1.55, //(moderate exercise 3-5 days / week
     "Very Active": 1.725, //(heavy exercise 5-7 days / week)
@@ -261,14 +289,12 @@ const createTDEEQuestionnaire = () => {
     activityLevelOption.textContent = level;
     tdeeQuestionnaireActivityLevelInput.appendChild(activityLevelOption);
   }
+  tdeeQuestionnaire.appendChild(tdeeQuestionnaireActivityLevelInput);
 
   const tdeeQuestionnaireSubmit = document.createElement("button");
   tdeeQuestionnaireSubmit.setAttribute("type", "submit");
   tdeeQuestionnaireSubmit.setAttribute("id", "tdee-questionnaire-submit");
-  tdeeQuestionnaireSubmit.setAttribute(
-    "class",
-    "tdee-questionnaire-submit"
-  );
+  tdeeQuestionnaireSubmit.setAttribute("class", "tdee-questionnaire-submit");
   tdeeQuestionnaireSubmit.textContent = "Submit";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireSubmit);
 
@@ -276,23 +302,29 @@ const createTDEEQuestionnaire = () => {
     event.preventDefault();
     console.log(event.target);
 
-    const age = parseInt(document.getElementById("tdee-questionnaire-age").value);
+    const age = parseInt(
+      document.getElementById("tdee-questionnaire-age").value
+    );
     const gender = document.getElementById("tdee-questionnaire-gender").value;
-    const feet = parseInt(document.getElementById("tdee-questionnaire-feet").value);
-    const inches = parseInt(document.getElementById("tdee-questionnaire-inches").value);
-    const weight = parseInt(document.getElementById("tdee-questionnaire-weight").value);
-    const activityLevel = document.getElementById("tdee-questionnaire-activity-level").value;
+    const feet = parseInt(
+      document.getElementById("tdee-questionnaire-feet").value
+    );
+    const inches = parseInt(
+      document.getElementById("tdee-questionnaire-inches").value
+    );
+    const weight = parseInt(
+      document.getElementById("tdee-questionnaire-weight").value
+    );
+    const activityLevel = document.getElementById(
+      "tdee-questionnaire-activity-level"
+    ).value;
 
-    calculateTDEE(weight, feet, inches, age, gender, activityLevel); 
+    calculateTDEE(weight, feet, inches, age, gender, activityLevel);
   });
-
 };
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
   console.log(event.target);
   createTDEEQuestionnaire();
-  }
-);
-
-
+});
