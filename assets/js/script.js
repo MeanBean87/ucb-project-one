@@ -72,13 +72,13 @@ const calculateMaleBMR = (weight, height, age) => {
   return 66 + 13.7 * weight + 5 * height - 6.8 * age;
 };
 
-const calculateBMR = (weight, height, age, gender) => {
+const calculateTDEE = (weight, height, age, gender, activityLevel) => {
   let weight = convertPoundsToKilograms(weight);
   let height = convertInchesToCentimeters(convertImpHeightToBaseInches(height));
 
   if (gender === "Female") {
-    return calculateFemaleBMR(weight, height, age);
+    return calculateFemaleBMR(weight, height, age) * activityLevel;
   } else {
-    return calculateMaleBMR(weight, height, age);
+    return calculateMaleBMR(weight, height, age) * activityLevel;
   }
 };
