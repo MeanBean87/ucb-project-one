@@ -1,7 +1,9 @@
 const mainContainer = document.getElementById("main-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
 
-//TODO: Refine parameters to suit our needs.
+let tdee = 0;
+
+//Fetch functions==================================================================================
 const fetchMealDbObj = async (query) => {
   const url =
     `https://www.themealdb.com/api/json/v1/1/search.php?s=` +
@@ -20,7 +22,6 @@ const fetchMealDbObj = async (query) => {
   }
 };
 
-//TODO: Refine parameters to suit our needs.
 const fetchCalorieNinjas = async (query) => {
   const apiKey = "aPOBA91RAEupAPbEjV0ibQ==1WKhc49resmT47Kr";
   const url =
@@ -47,49 +48,6 @@ const fetchCalorieNinjas = async (query) => {
   }
 };
 
-const convertImpHeightToBaseInches = (feet, inches) => {
-  return feet * 12 + inches;
-};
-
-const convertInchesToCentimeters = (inches) => {
-  return inches * 2.54;
-};
-
-const convertPoundsToKilograms = (pounds) => {
-  return pounds * 0.45359237;
-};
-
-const calculateFemaleBMR = (weight, height, age) => {
-  return 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
-};
-
-const calculateMaleBMR = (weight, height, age) => {
-  return 66 + 13.7 * weight + 5 * height - 6.8 * age;
-};
-
-const calculateTDEE = (weight, feet, inches, age, gender, activityLevel) => {
-  let convertedWeight = convertPoundsToKilograms(weight);
-  let convertedHeight = convertInchesToCentimeters(
-    convertImpHeightToBaseInches(feet, inches)
-  );
-
-  if (gender === "Female") {
-    console.log(
-      calculateFemaleBMR(convertedWeight, convertedHeight, age) * activityLevel
-    );
-  } else {
-    console.log(
-      calculateMaleBMR(convertedWeight, convertedHeight, age) * activityLevel
-    );
-  }
-};
-
-const caloriesPerMeal = (calories, numberOfMeals) => {
-  return calories / numberOfMeals;
-};
-
-//================================================================================================
-
 const fetchEdamamObj = async (queryString) => {
   const appId = `ea339611`;
   const appKey = `40023aebe29c8284c820e11ded63b70f`;
@@ -113,6 +71,107 @@ const fetchEdamamObj = async (queryString) => {
 
 //================================================================================================
 
+//TDEE Algorithm==================================================================================
+const activityLevel = {
+  Sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
+  "Lightly Active": 1.375, // (light exercise 1-3 days / week)
+  "Moderately Active": 1.55, //(moderate exercise 3-5 days / week
+  "Very Active": 1.725, //(heavy exercise 5-7 days / week)
+  "Extremely Active": 1.9, //(very heavy exercise, hard labor job, training 2x / day)
+};
+
+const convertImpHeightToBaseInches = (feet, inches) => {
+  return feet * 12 + inches;
+};
+
+const convertInchesToCentimeters = (inches) => {
+  return inches * 2.54;
+};
+
+const convertPoundsToKilograms = (pounds) => {
+  return pounds * 0.45359237;
+};
+
+const calculateFemaleBMR = (weight, height, age) => {
+  return 655 + 9.6 * weight + 1.8 * height - 4.7 * age;
+};
+
+const calculateMaleBMR = (weight, height, age) => {
+  return 66 + 13.7 * weight + 5 * height - 6.8 * age;
+};
+
+const calculateTDEE = (
+  weight,
+  feet,
+  inches,
+  age,
+  gender,
+  selectedActivityLevel
+) => {
+  let convertedWeight = convertPoundsToKilograms(weight);
+  let convertedHeight = convertInchesToCentimeters(
+    convertImpHeightToBaseInches(feet, inches)
+  );
+
+  if (gender === "Female") {
+    console.log(
+      tdee = calculateFemaleBMR(convertedWeight, convertedHeight, age) *
+        activityLevel[selectedActivityLevel]
+    );
+  } else {
+    console.log(
+      tdee = calculateMaleBMR(convertedWeight, convertedHeight, age) *
+        activityLevel[selectedActivityLevel]
+    );
+  }
+};
+
+
+//Might be unused
+const caloriesPerMeal = (calories, numberOfMeals) => {
+  return calories / numberOfMeals;
+};
+
+const determineMacroNutrients = (tdee, goal) => {
+  let carbohydrates;
+  let protein;
+  let fat;
+
+  if (goal === "Lose Weight") {
+    carbohydrates = 0.4;
+    protein = 0.4;
+    fat = 0.2;
+  } else if (goal === "Gain Weight") {
+    carbohydrates = 0.5;
+    protein = 0.3;
+    fat = 0.2;
+  } else if (goal === "Build Muscle") {
+    carbohydrates = 0.45;
+    protein = 0.4;
+    fat = 0.15;
+  } else {
+    carbohydrates = 0.45;
+    protein = 0.3;
+    fat = 0.25;
+  }
+
+  if (tdee >= 2500) {
+    carbohydrates += 0.05;
+    fat -= 0.05;
+  } else if (tdee <= 1500) {
+    carbohydrates -= 0.05;
+    fat += 0.05;
+  }
+
+  return {"carbohydrates": carbohydrates, "protein": protein, "fat": fat};
+
+};
+
+
+
+//================================================================================================
+
+//TDDE QUESTIONNAIRE==================================================================================
 const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaire = document.createElement("form");
   tdeeQuestionnaire.setAttribute("id", "tdee-questionnaire");
@@ -275,14 +334,6 @@ const createTDEEQuestionnaire = () => {
     "tdee-questionnaire-activity-level"
   );
 
-  const activityLevel = {
-    Sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
-    "Lightly Active": 1.375, // (light exercise 1-3 days / week)
-    "Moderately Active": 1.55, //(moderate exercise 3-5 days / week
-    "Very Active": 1.725, //(heavy exercise 5-7 days / week)
-    "Extremely Active": 1.9, //(very heavy exercise, hard labor job, training 2x / day)
-  };
-
   for (const level in activityLevel) {
     const activityLevelOption = document.createElement("option");
     activityLevelOption.setAttribute("value", level);
@@ -300,8 +351,6 @@ const createTDEEQuestionnaire = () => {
 
   tdeeQuestionnaire.addEventListener("submit", function (event) {
     event.preventDefault();
-    console.log(event.target);
-
     const age = parseInt(
       document.getElementById("tdee-questionnaire-age").value
     );
@@ -322,9 +371,69 @@ const createTDEEQuestionnaire = () => {
     calculateTDEE(weight, feet, inches, age, gender, activityLevel);
   });
 };
+//================================================================================================
 
+const clearMainContainer = () => {
+  mainContainer.forEach((element) => {
+    element.remove();
+  });
+};
+
+//Create Meal Plan==================================================================================
+const searchforMeal = async (query) => {
+  clearMainContainer();
+};
+
+
+//================================================================================================
+const createMealQuestionnaire = () => {
+  const mealQuestionnaire = document.createElement("form");
+  mealQuestionnaire.setAttribute("id", "meal-questionnaire");
+  mealQuestionnaire.setAttribute("class", "meal-questionnaire");
+  mainContainer.appendChild(mealQuestionnaire);
+
+  const mealQuestionnaireTitle = document.createElement("h2");
+  mealQuestionnaireTitle.setAttribute("id", "meal-questionnaire-title");
+  mealQuestionnaireTitle.setAttribute("class", "meal-questionnaire-title");
+  mealQuestionnaireTitle.textContent = `Your TDEE is ${tdee}`;
+  mealQuestionnaire.appendChild(mealQuestionnaireTitle);
+
+  const mealQuestionnaireDescription = document.createElement("p");
+  mealQuestionnaireDescription.setAttribute("id", "meal-questionnaire-description");
+  mealQuestionnaireDescription.setAttribute("class", "meal-questionnaire-description");
+  mealQuestionnaireDescription.textContent = "Please answer the following questions to generate your meal plan:";
+  mealQuestionnaire.appendChild(mealQuestionnaireDescription);
+
+  const mealQuestionnaireCalories = document.createElement("label");
+  mealQuestionnaireCalories.setAttribute("for", "meal-questionnaire-calories");
+  mealQuestionnaireCalories.setAttribute("id", "meal-questionnaire-calories-label");
+  mealQuestionnaireCalories.setAttribute("class", "meal-questionnaire-calories-label");
+  mealQuestionnaireCalories.textContent = "What are your fitness goals: ";
+
+  const goalOptions = ["Lose Weight", "Maintain Weight", "Gain Weight", "Build Muscle"];
+  
+  const mealQuestionnaireCaloriesInput = document.createElement("select");
+  mealQuestionnaireCaloriesInput.setAttribute("id", "meal-questionnaire-calories");
+  mealQuestionnaireCaloriesInput.setAttribute("class", "meal-questionnaire-calories");
+  for (const option of goalOptions) {
+    const goalOption = document.createElement("option");
+    goalOption.setAttribute("value", option);
+    goalOption.textContent = option;
+    mealQuestionnaireCaloriesInput.appendChild(goalOption);
+  }
+  mealQuestionnaire.appendChild(mealQuestionnaireCalories);
+
+
+
+
+
+};
+
+//Global Event Listeners===========================================================================
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
   console.log(event.target);
   createTDEEQuestionnaire();
 });
+
+//================================================================================================
