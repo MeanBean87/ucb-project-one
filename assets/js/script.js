@@ -515,55 +515,73 @@ const createMealSearchQuestionnaire = () => {
   mealSearchQuestionnaireTitle.textContent = "Meal Search Questionnaire";
   mealSearchQuestionnaire.appendChild(mealSearchQuestionnaireTitle);
 
-  //Allergies / Health Concerns
-  const dropdownContainer = document.createElement("div");
-  dropdownContainer.setAttribute("class", "dropdown-container");
-  dropdownContainer.setAttribute("style", "display: flex; flex-direction: column; align-items: center;");
+  // Allergies / Health Concerns
+  const allergyContainer = document.createElement("div");
+  allergyContainer.setAttribute("class", "allergy-container");
+  allergyContainer.setAttribute("style", "display: flex; flex-direction: column; align-items: center;");
 
-  const dropdownLabel = document.createElement("label");
-  dropdownLabel.setAttribute("for", "healthValues");
-  dropdownLabel.textContent = "Allergies / Health Concerns: ";
+  const allergyLabel = document.createElement("label");
+  allergyLabel.setAttribute("for", "allergy-values");
+  allergyLabel.textContent = "Allergies / Health Concerns: ";
+  allergyContainer.appendChild(allergyLabel);
 
-  const dropdownSelect = document.createElement("select");
-  dropdownSelect.setAttribute("name", "healthValues");
-  dropdownSelect.setAttribute("id", "healthValues");
-  dropdownSelect.setAttribute("multiple", true);
+  const allergyList = document.createElement("ul");
+  allergyList.setAttribute("class", "allergy-list");
 
   for (const value of values.healthValues) {
-    const option = document.createElement("option");
-    option.setAttribute("value", value);
-    option.textContent = value;
-    dropdownSelect.appendChild(option);
+    const listItem = document.createElement("li");
+    listItem.setAttribute("class", "allergy-list-item");
+
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("name", "allergy-values");
+    checkbox.setAttribute("value", value);
+    listItem.appendChild(checkbox);
+
+    const label = document.createElement("label");
+    label.setAttribute("for", value);
+    label.textContent = value;
+    listItem.appendChild(label);
+
+    allergyList.appendChild(listItem);
   }
 
-  dropdownContainer.appendChild(dropdownLabel);
-  dropdownContainer.appendChild(dropdownSelect);
-  mealSearchQuestionnaire.appendChild(dropdownContainer);
+  allergyContainer.appendChild(allergyList);
+  mealSearchQuestionnaire.appendChild(allergyContainer);
 
-  mealTypeContainer = document.createElement("div");
+  // Meal Type
+  const mealTypeContainer = document.createElement("div");
   mealTypeContainer.setAttribute("class", "meal-type-container");
   mealTypeContainer.setAttribute("style", "display: flex; flex-direction: column; align-items: center;");
   mealSearchQuestionnaire.appendChild(mealTypeContainer);
 
-  //Meal Type
   const mealTypeLabel = document.createElement("label");
   mealTypeLabel.setAttribute("for", "mealType");
   mealTypeLabel.textContent = "Meal Type: ";
+  mealTypeContainer.appendChild(mealTypeLabel);
 
-  const mealTypeSelect = document.createElement("select");
-  mealTypeSelect.setAttribute("name", "mealType");
-  mealTypeSelect.setAttribute("id", "mealType");
-  mealTypeSelect.setAttribute("multiple", true);
+  const mealTypeList = document.createElement("ul");
+  mealTypeList.setAttribute("class", "meal-type-list");
 
   for (const value of values.mealType) {
-    const option = document.createElement("option");
-    option.setAttribute("value", value);
-    option.textContent = value;
-    mealTypeSelect.appendChild(option);
+    const listItem = document.createElement("li");
+    listItem.setAttribute("class", "meal-type-list-item");
+
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("name", "mealType");
+    checkbox.setAttribute("value", value);
+    listItem.appendChild(checkbox);
+
+    const label = document.createElement("label");
+    label.setAttribute("for", value);
+    label.textContent = value;
+    listItem.appendChild(label);
+
+    mealTypeList.appendChild(listItem);
   }
 
-  mealTypeContainer.appendChild(mealTypeLabel);
-  mealTypeContainer.appendChild(mealTypeSelect);  
+  mealTypeContainer.appendChild(mealTypeList);
 };
 
 
