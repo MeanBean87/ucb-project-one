@@ -7,19 +7,25 @@ const mealPlanGenerator = document.getElementById("meal-plan-generator");
 let tdee = 0;
 
 //Fetch functions==================================================================================
-const fetchEdamamObj = async (queryMealType, queryCalories, queryCarbs, queryProtein, queryFat,) => {
+const fetchEdamamObj = async (
+  queryMealType,
+  queryCalories,
+  queryCarbs,
+  queryProtein,
+  queryFat
+) => {
   let calories = queryCalories;
   let fat = queryFat;
   let carbohydrates = queryCarbs;
   let protein = queryProtein;
   let mealType = queryMealType;
 
-  const url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611
-  &app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}
-  &nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
+  console.log(calories, fat, carbohydrates, protein, mealType)
+
+  let url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611&app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}&nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
 
   try {
-    const response = await fetch(`${url}${query}`);
+    const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
       console.log(data);
@@ -35,6 +41,8 @@ const fetchEdamamObj = async (queryMealType, queryCalories, queryCarbs, queryPro
 const fetchExerciseObj = async (queryString) => {};
 //================================================================================================
 
+
+  
 //TDEE Algorithm==================================================================================
 const values = {
   dietValues: [
@@ -189,29 +197,6 @@ const calculateMaleBMR = (weight, height, age) => {
   return 66 + 13.7 * weight + 5 * height - 6.8 * age;
 };
 
-const startFunction = (
-  weight,
-  feet,
-  inches,
-  age,
-  gender,
-  activityLevel,
-  goal
-) => {
-  let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
-  let macroNutrients = calculateMacroNutrients(tdee, goal);
-  console.log(divideMeals(tdee, macroNutrients));
-  return divideMeals(tdee, macroNutrients);
-};
-
-const getFood = async (totalIntakeObj) => {
-  let calories = totalIntakeObj.tdee / 4;
-  for (let i = 0; i < totalIntakeObj.lenght; i++) {
-   let food = await fetchEdamamObj(totalIntakeObj[i], calories, totalIntakeObj[i].fat, totalIntakeObj[i].carbs, totalIntakeObj[i].protein); 
-  }
-};
-
-
 const calculateTDEE = (
   weight,
   feet,
@@ -219,21 +204,21 @@ const calculateTDEE = (
   age,
   gender,
   selectedActivityLevel
-) => {
-  let convertedWeight = convertPoundsToKilograms(weight);
-  let convertedHeight = convertInchesToCentimeters(
-    convertImpHeightToBaseInches(feet, inches)
-  );
-
-  if (gender === "Female") {
-    return (
+  ) => {
+    let convertedWeight = convertPoundsToKilograms(weight);
+    let convertedHeight = convertInchesToCentimeters(
+      convertImpHeightToBaseInches(feet, inches)
+      );
+      
+      if (gender === "Female") {
+        return (
       calculateFemaleBMR(convertedWeight, convertedHeight, age) *
       activityLevel[selectedActivityLevel]
-    );
-  } else {
-    return (
-      calculateMaleBMR(convertedWeight, convertedHeight, age) *
-      activityLevel[selectedActivityLevel]
+      );
+    } else {
+      return (
+        calculateMaleBMR(convertedWeight, convertedHeight, age) *
+        activityLevel[selectedActivityLevel]
     );
   }
 };
@@ -242,7 +227,7 @@ const calculateMacroNutrients = (tdee, goal) => {
   let carbohydrates;
   let protein;
   let fat;
-
+  
   if (goal === "Lose Weight") {
     carbohydrates = 0.4;
     protein = 0.4;
@@ -260,7 +245,7 @@ const calculateMacroNutrients = (tdee, goal) => {
     protein = 0.3;
     fat = 0.25;
   }
-
+  
   if (tdee >= 2500) {
     carbohydrates += 0.05;
     fat -= 0.05;
@@ -268,22 +253,24 @@ const calculateMacroNutrients = (tdee, goal) => {
     carbohydrates -= 0.05;
     fat += 0.05;
   }
-
+  
   return { carbohydrates: carbohydrates, protein: protein, fat: fat };
 };
 
 const divideMeals = (tdee, macroNutrients) => {
   const { carbohydrates, protein, fat } = macroNutrients;
-
+  
   const caloriesFromCarbohydrates = Math.round(tdee * carbohydrates);
   const caloriesFromProtein = Math.round(tdee * protein);
   const caloriesFromFat = Math.round(tdee * fat);
-
+  
   const gramsOfCarbohydrates = Math.round(caloriesFromCarbohydrates / 4);
   const gramsOfProtein = Math.round(caloriesFromProtein / 4);
   const gramsOfFat = Math.round(caloriesFromFat / 9);
   console.log(gramsOfCarbohydrates, gramsOfProtein, gramsOfFat);
-
+  
+  let dividedTdee = tdee / 4;
+  
   const meals = {
     breakfast: {
       carbohydrates: Math.round(gramsOfCarbohydrates * 0.25),
@@ -305,10 +292,65 @@ const divideMeals = (tdee, macroNutrients) => {
       protein: Math.round(gramsOfProtein * 0.1),
       fat: Math.round(gramsOfFat * 0.1),
     },
-    tdee: tdee,
+    tdee: dividedTdee,
   };
 
   return meals;
+};
+
+const startFunction = (
+  weight,
+  feet,
+  inches,
+  age,
+  gender,
+  activityLevel,
+  goal
+) => {
+  let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
+  let macroNutrients = calculateMacroNutrients(tdee, goal);
+  console.log(divideMeals(tdee, macroNutrients));
+  let dividedMeals = divideMeals(tdee, macroNutrients);
+
+  getFood(dividedMeals);
+};
+
+const getFood = async (totalIntakeObj) => {
+  let calories = totalIntakeObj.tdee / 4;
+  console.log("this is" + totalIntakeObj)
+
+  let breakfastObj = await fetchEdamamObj(
+    "Breakfast",
+    calories,
+    totalIntakeObj.breakfast.carbohydrates,
+    totalIntakeObj.breakfast.protein,
+    totalIntakeObj.breakfast.fat
+  );
+
+  let lunchObj = await fetchEdamamObj(
+    "Lunch",
+    calories,
+    totalIntakeObj.lunch.carbohydrates,
+    totalIntakeObj.lunch.protein,
+    totalIntakeObj.lunch.fat
+  );
+
+  let dinnerObj = await fetchEdamamObj(
+    "Dinner",
+    calories,
+    totalIntakeObj.dinner.carbohydrates,
+    totalIntakeObj.dinner.protein,
+    totalIntakeObj.dinner.fat
+  );
+
+  let snacksObj = await fetchEdamamObj(
+    "Snack",
+    calories,
+    totalIntakeObj.snacks.carbohydrates,
+    totalIntakeObj.snacks.protein,
+    totalIntakeObj.snacks.fat
+  );
+  console.log(breakfastObj, lunchObj, dinnerObj, snacksObj);
 };
 
 //================================================================================================
