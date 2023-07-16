@@ -7,7 +7,7 @@ const mealPlanGenerator = document.getElementById("meal-plan-generator");
 let tdee = 0;
 
 //Fetch functions==================================================================================
-const fetchEdamamObj = async (
+const fetchEdamamObj = (
   queryMealType,
   queryCalories,
   queryCarbs,
@@ -20,22 +20,8 @@ const fetchEdamamObj = async (
   let protein = queryProtein;
   let mealType = queryMealType;
 
-  console.log(calories, fat, carbohydrates, protein, mealType);
-
   let url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611&app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}&nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
-
-  try {
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } else {
-      throw new Error(`Error: ${response.statusText} (${response.status})`);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  return fetch(url);
 };
 
 const fetchExerciseObj = async (queryString) => {};
@@ -311,62 +297,71 @@ const startFunction = async (
   goal,
   name
 ) => {
-  let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
-  let macroNutrients = calculateMacroNutrients(tdee, goal);
-  let dividedMeals = divideMeals(tdee, macroNutrients);
-  console.log(dividedMeals);
-  let mealObj = await getFood(dividedMeals);
-  console.log(mealObj);
-  const dateString = new Date().toISOString();
-  const appendedName = name + " " + dateString; 
-  localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
-  const tableContainerCheck = document.getElementById("meal-plan-table");
-  if (tableContainerCheck) {
-    tableContainerCheck.remove();
+  try {
+    let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
+    let macroNutrients = calculateMacroNutrients(tdee, goal);
+    let dividedMeals = divideMeals(tdee, macroNutrients);
+    let mealObj = await getFood(dividedMeals);
+    console.log(mealObj);
+    const dateString = new Date().toISOString();
+    const appendedName = name + " " + dateString;
+    localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
+    createMealPlan(dividedMeals);
+  } catch (error) {
+    console.error("An error occurred during startFunction:", error);
   }
-  createMealPlan(dividedMeals);
 };
 
 const getFood = async (totalIntakeObj) => {
-  console.log("this is" + totalIntakeObj);
+  let breakfastObj;
+  let lunchObj;
+  let dinnerObj;
+  let snacksObj;
 
-  let breakfastObj = await fetchEdamamObj(
-    "Breakfast",
-    totalIntakeObj.breakfast.calories,
-    totalIntakeObj.breakfast.carbohydrates,
-    totalIntakeObj.breakfast.protein,
-    totalIntakeObj.breakfast.fat
-  );
+  try {
+    const [breakfastRes, lunchRes, dinnerRes, snacksRes] = await Promise.all([
+      fetchEdamamObj(
+        "Breakfast",
+        totalIntakeObj.breakfast.calories,
+        totalIntakeObj.breakfast.carbohydrates,
+        totalIntakeObj.breakfast.protein,
+        totalIntakeObj.breakfast.fat
+      ),
+      fetchEdamamObj(
+        "Lunch",
+        totalIntakeObj.lunch.calories,
+        totalIntakeObj.lunch.carbohydrates,
+        totalIntakeObj.lunch.protein,
+        totalIntakeObj.lunch.fat
+      ),
+      fetchEdamamObj(
+        "Dinner",
+        totalIntakeObj.dinner.calories,
+        totalIntakeObj.dinner.carbohydrates,
+        totalIntakeObj.dinner.protein,
+        totalIntakeObj.dinner.fat
+      ),
+      fetchEdamamObj(
+        "Snack",
+        totalIntakeObj.snacks.calories,
+        totalIntakeObj.snacks.carbohydrates,
+        totalIntakeObj.snacks.protein,
+        totalIntakeObj.snacks.fat
+      ),
+    ]);
 
-  let lunchObj = await fetchEdamamObj(
-    "Lunch",
-    totalIntakeObj.lunch.calories,
-    totalIntakeObj.lunch.carbohydrates,
-    totalIntakeObj.lunch.protein,
-    totalIntakeObj.lunch.fat
-  );
-
-  let dinnerObj = await fetchEdamamObj(
-    "Dinner",
-    totalIntakeObj.dinner.calories,
-    totalIntakeObj.dinner.carbohydrates,
-    totalIntakeObj.dinner.protein,
-    totalIntakeObj.dinner.fat
-  );
-
-  let snacksObj = await fetchEdamamObj(
-    "Snack",
-    totalIntakeObj.snacks.calories,
-    totalIntakeObj.snacks.carbohydrates,
-    totalIntakeObj.snacks.protein,
-    totalIntakeObj.snacks.fat
-  );
+    breakfastObj = await breakfastRes.json();
+    lunchObj = await lunchRes.json();
+    dinnerObj = await dinnerRes.json();
+    snacksObj = await snacksRes.json();
+  } catch (error) {
+    console.error("An error occurred during getFood:", error);
+  }
 
   return { breakfastObj, lunchObj, dinnerObj, snacksObj };
 };
 
 //================================================================================================
-
 
 //TDEE QUESTIONNAIRE==============================================================================
 const createTDEEQuestionnaire = () => {
@@ -627,7 +622,6 @@ const createTDEEQuestionnaire = () => {
 
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
-    
     startFunction(weight, feet, inches, age, gender, activityLevel, goal, name)
       .then(() => {
         removeAppendedElements();
@@ -648,6 +642,7 @@ const removeAppendedElements = () => {
 //Create Meal Plan==================================================================================
 const createMealPlan = (dividedMeals) => {
   const tableContainerCheck = document.getElementById("meal-plan-table");
+
   if (tableContainerCheck) {
     tableContainerCheck.remove();
   }
@@ -661,42 +656,34 @@ const createMealPlan = (dividedMeals) => {
   );
   mainContainer.appendChild(tableContainer);
 
-  const tableData = Object.entries(dividedMeals).reduce((result, [key, value]) => {
-    if (key !== "tdee") {
+  const tableData = Object.entries(dividedMeals).reduce(
+    (result, [key, value]) => {
       result.push({
-        Meal: key,
+        Meal: key.charAt(0).toUpperCase() + key.slice(1),
+        Calories: value.calories,
         Carbohydrates: value.carbohydrates,
         Protein: value.protein,
         Fat: value.fat,
       });
-    }
-    return result;
-  }, []);
+      return result;
+    },
+    []
+  );
 
   new Tabulator("#meal-plan-table", {
     data: tableData,
     layout: "fitColumns",
     columns: [
       { title: "Meal", field: "Meal" },
+      { title: "Calories", field: "Calories" },
       { title: "Carbohydrates", field: "Carbohydrates" },
       { title: "Protein", field: "Protein" },
       { title: "Fat", field: "Fat" },
     ],
   });
-
-  const tdeeValue = dividedMeals["tdee"];
-  if (tdeeValue !== undefined) {
-    const tdeeContainer = document.createElement("div");
-    tdeeContainer.setAttribute("class", "tdee-container");
-    tdeeContainer.textContent = `Average Calories per Meal: ${Math.round(tdeeValue)}`;
-    mainContainer.appendChild(tdeeContainer);
-  }
 };
 
-
 //================================================================================================
-
-
 
 const createHomePage = () => {
   const homePage = document.createElement("div");
@@ -705,37 +692,38 @@ const createHomePage = () => {
   homePage.setAttribute(
     "style",
     "display: flex; flex-direction: column; align-items: center;"
-    );
-    bodyContainer.appendChild(homePage);
-    
-    const homePageImage = document.createElement("img");
-    homePageImage.setAttribute("id", "home-page-image");
-    homePageImage.setAttribute("class", "home-page-image");
-    homePageImage.setAttribute("src", "./assets/Images/logo.png");
-    homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
-    bodyContainer.appendChild(homePageImage);
-    
-    const homePageDescription = document.createElement("p");
-    homePageDescription.setAttribute("id", "home-page-description");
-    homePageDescription.setAttribute("class", "home-page-description");
-    homePageDescription.textContent =
+  );
+  bodyContainer.appendChild(homePage);
+
+  const homePageImage = document.createElement("img");
+  homePageImage.setAttribute("id", "home-page-image");
+  homePageImage.setAttribute("class", "home-page-image");
+  homePageImage.setAttribute("src", "./assets/Images/logo.png");
+  homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
+  bodyContainer.appendChild(homePageImage);
+
+  const homePageDescription = document.createElement("p");
+  homePageDescription.setAttribute("id", "home-page-description");
+  homePageDescription.setAttribute("class", "home-page-description");
+  homePageDescription.textContent =
     "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
-    bodyContainer.appendChild(homePageDescription);
-    
-    const homeLink = document.getElementById("home-link");
-    
-    homeLink.addEventListener("click", function (event) {
-      event.preventDefault();
-      clearMainContainer();
-      createHomePage();
-    });
-  };
-  
-  createHomePage();
-  
-  //Global Event Listeners===========================================================================
-  mealPlanGenerator.addEventListener("click", function (event) {
+  bodyContainer.appendChild(homePageDescription);
+
+  const homeLink = document.getElementById("home-link");
+
+  homeLink.addEventListener("click", function (event) {
     event.preventDefault();
-    createTDEEQuestionnaire();
+    clearMainContainer();
+    createHomePage();
   });
-  //================================================================================================
+};
+
+createHomePage();
+
+//Global Event Listeners===========================================================================
+mealPlanGenerator.addEventListener("click", function (event) {
+  event.preventDefault();
+  createTDEEQuestionnaire();
+});
+//================================================================================================
+
