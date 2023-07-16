@@ -266,30 +266,36 @@ const divideMeals = (tdee, macroNutrients) => {
   const gramsOfProtein = Math.round(caloriesFromProtein / 4);
   const gramsOfFat = Math.round(caloriesFromFat / 9);
 
-  let dividedTdee = tdee / 4;
+  const breakfastCalories = Math.round(tdee * 0.25);
+  const lunchCalories = Math.round(tdee * 0.35);
+  const dinnerCalories = Math.round(tdee * 0.3);
+  const snacksCalories = Math.round(tdee * 0.1);
 
   const meals = {
     breakfast: {
       carbohydrates: Math.round(gramsOfCarbohydrates * 0.25),
       protein: Math.round(gramsOfProtein * 0.25),
       fat: Math.round(gramsOfFat * 0.25),
+      calories: breakfastCalories,
     },
     lunch: {
       carbohydrates: Math.round(gramsOfCarbohydrates * 0.35),
       protein: Math.round(gramsOfProtein * 0.35),
       fat: Math.round(gramsOfFat * 0.35),
+      calories: lunchCalories,
     },
     dinner: {
       carbohydrates: Math.round(gramsOfCarbohydrates * 0.3),
       protein: Math.round(gramsOfProtein * 0.3),
       fat: Math.round(gramsOfFat * 0.3),
+      calories: dinnerCalories,
     },
     snacks: {
       carbohydrates: Math.round(gramsOfCarbohydrates * 0.1),
       protein: Math.round(gramsOfProtein * 0.1),
       fat: Math.round(gramsOfFat * 0.1),
+      calories: snacksCalories,
     },
-    tdee: dividedTdee,
   };
 
   return meals;
@@ -310,20 +316,23 @@ const startFunction = async (
   let dividedMeals = divideMeals(tdee, macroNutrients);
   console.log(dividedMeals);
   let mealObj = await getFood(dividedMeals);
-  let mealObjString = JSON.stringify(mealObj);
-  console.log(mealObjString);
+  console.log(mealObj);
   const dateString = new Date().toISOString();
   const appendedName = name + " " + dateString; 
   localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
+  const tableContainerCheck = document.getElementById("meal-plan-table");
+  if (tableContainerCheck) {
+    tableContainerCheck.remove();
+  }
+  createMealPlan(dividedMeals);
 };
 
 const getFood = async (totalIntakeObj) => {
-  let calories = totalIntakeObj.tdee;
   console.log("this is" + totalIntakeObj);
 
   let breakfastObj = await fetchEdamamObj(
     "Breakfast",
-    calories,
+    totalIntakeObj.breakfast.calories,
     totalIntakeObj.breakfast.carbohydrates,
     totalIntakeObj.breakfast.protein,
     totalIntakeObj.breakfast.fat
@@ -331,7 +340,7 @@ const getFood = async (totalIntakeObj) => {
 
   let lunchObj = await fetchEdamamObj(
     "Lunch",
-    calories,
+    totalIntakeObj.lunch.calories,
     totalIntakeObj.lunch.carbohydrates,
     totalIntakeObj.lunch.protein,
     totalIntakeObj.lunch.fat
@@ -339,7 +348,7 @@ const getFood = async (totalIntakeObj) => {
 
   let dinnerObj = await fetchEdamamObj(
     "Dinner",
-    calories,
+    totalIntakeObj.dinner.calories,
     totalIntakeObj.dinner.carbohydrates,
     totalIntakeObj.dinner.protein,
     totalIntakeObj.dinner.fat
@@ -347,7 +356,7 @@ const getFood = async (totalIntakeObj) => {
 
   let snacksObj = await fetchEdamamObj(
     "Snack",
-    calories,
+    totalIntakeObj.snacks.calories,
     totalIntakeObj.snacks.carbohydrates,
     totalIntakeObj.snacks.protein,
     totalIntakeObj.snacks.fat
@@ -636,17 +645,58 @@ const removeAppendedElements = () => {
   parentElement.removeChild(tdeeQuestionnaire);
 };
 
-
-
-
 //Create Meal Plan==================================================================================
+const createMealPlan = (dividedMeals) => {
+  const tableContainerCheck = document.getElementById("meal-plan-table");
+  if (tableContainerCheck) {
+    tableContainerCheck.remove();
+  }
+
+  const tableContainer = document.createElement("div");
+  tableContainer.setAttribute("id", "meal-plan-table");
+  tableContainer.setAttribute("class", "meal-plan-table");
+  tableContainer.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
+  mainContainer.appendChild(tableContainer);
+
+  const tableData = Object.entries(dividedMeals).reduce((result, [key, value]) => {
+    if (key !== "tdee") {
+      result.push({
+        Meal: key,
+        Carbohydrates: value.carbohydrates,
+        Protein: value.protein,
+        Fat: value.fat,
+      });
+    }
+    return result;
+  }, []);
+
+  new Tabulator("#meal-plan-table", {
+    data: tableData,
+    layout: "fitColumns",
+    columns: [
+      { title: "Meal", field: "Meal" },
+      { title: "Carbohydrates", field: "Carbohydrates" },
+      { title: "Protein", field: "Protein" },
+      { title: "Fat", field: "Fat" },
+    ],
+  });
+
+  const tdeeValue = dividedMeals["tdee"];
+  if (tdeeValue !== undefined) {
+    const tdeeContainer = document.createElement("div");
+    tdeeContainer.setAttribute("class", "tdee-container");
+    tdeeContainer.textContent = `Average Calories per Meal: ${Math.round(tdeeValue)}`;
+    mainContainer.appendChild(tdeeContainer);
+  }
+};
 
 
 //================================================================================================
 
-//Global Event Listeners===========================================================================
 
-//================================================================================================
 
 const createHomePage = () => {
   const homePage = document.createElement("div");
@@ -683,7 +733,9 @@ const createHomePage = () => {
   
   createHomePage();
   
+  //Global Event Listeners===========================================================================
   mealPlanGenerator.addEventListener("click", function (event) {
     event.preventDefault();
     createTDEEQuestionnaire();
   });
+  //================================================================================================
