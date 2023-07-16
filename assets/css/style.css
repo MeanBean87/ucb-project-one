@@ -9,3 +9,15 @@
 }
 
 
+#main-container {
+    display: flex;
+    justify-content: space-between;
+  }
+#meal-search-questionnaire {
+    width: 50%;
+    margin: 20px 20px 20px 20px;
+  }
+#tdee-questionnaire {
+    width: 50%;
+    margin: 20px 20px 20px 20px;
+  }
