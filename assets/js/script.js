@@ -1,15 +1,22 @@
+const bodyContainer = document.querySelector(".body-container");
+
 const mainContainer = document.getElementById("main-container");
+
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
 
 let tdee = 0;
 
 //Fetch functions==================================================================================
-const fetchEdamamObj = async (queryString) => {
-  const appId = `ea339611`;
-  const appKey = `40023aebe29c8284c820e11ded63b70f`;
-  const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${encodeURIComponent(
-    queryString
-  )}&app_id=${appId}&app_key=${appKey}`;
+const fetchEdamamObj = async (queryMealType, queryCalories, queryCarbs, queryProtein, queryFat,) => {
+  let calories = queryCalories;
+  let fat = queryFat;
+  let carbohydrates = queryCarbs;
+  let protein = queryProtein;
+  let mealType = queryMealType;
+
+  const url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611
+  &app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}
+  &nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
 
   try {
     const response = await fetch(`${url}${query}`);
@@ -197,6 +204,14 @@ const startFunction = (
   return divideMeals(tdee, macroNutrients);
 };
 
+const getFood = async (totalIntakeObj) => {
+  let calories = totalIntakeObj.tdee / 4;
+  for (let i = 0; i < totalIntakeObj.lenght; i++) {
+   let food = await fetchEdamamObj(totalIntakeObj[i], calories, totalIntakeObj[i].fat, totalIntakeObj[i].carbs, totalIntakeObj[i].protein); 
+  }
+};
+
+
 const calculateTDEE = (
   weight,
   feet,
@@ -290,7 +305,7 @@ const divideMeals = (tdee, macroNutrients) => {
       protein: Math.round(gramsOfProtein * 0.1),
       fat: Math.round(gramsOfFat * 0.1),
     },
-    "tdee": tdee
+    tdee: tdee,
   };
 
   return meals;
@@ -411,10 +426,7 @@ const createTDEEQuestionnaire = () => {
 
   //Form Height Input Label
   const tdeeQuestionnaireHeightLabel = document.createElement("label");
-  tdeeQuestionnaireHeightLabel.setAttribute(
-    "for",
-    "tdee-questionnaire-height-input"
-  );
+  tdeeQuestionnaireHeightLabel.setAttribute("for", "tdee-questionnaire-height");
   tdeeQuestionnaireHeightLabel.setAttribute(
     "id",
     "tdee-questionnaire-height-label"
@@ -639,10 +651,7 @@ const createMealSearchQuestionnaire = () => {
 
   // Allergies / Health Concerns
   const allergyContainer = document.createElement("div");
-  allergyContainer.setAttribute(
-    "class",
-    "allergy-container"
-  );
+  allergyContainer.setAttribute("class", "allergy-container");
   allergyContainer.setAttribute(
     "style",
     "display: flex; flex-direction: column; align-items: center;"
@@ -687,7 +696,9 @@ const createMealSearchQuestionnaire = () => {
   submitButton.addEventListener("click", function (event) {
     event.preventDefault();
 
-    const allergyValues = Array.from(document.getElementsByName("allergy-values"))
+    const allergyValues = Array.from(
+      document.getElementsByName("allergy-values")
+    )
       .filter((checkbox) => checkbox.checked)
       .map((checkbox) => checkbox.value);
 
@@ -727,27 +738,21 @@ const createHomePage = () => {
     "style",
     "display: flex; flex-direction: column; align-items: center;"
   );
-  mainContainer.appendChild(homePage);
-
-  const homePageTitle = document.createElement("h1");
-  homePageTitle.setAttribute("id", "home-page-title");
-  homePageTitle.setAttribute("class", "home-page-title");
-  homePageTitle.textContent = "Meal Plan Generator";
-  homePage.appendChild(homePageTitle);
-
-  const homePageDescription = document.createElement("p");
-  homePageDescription.setAttribute("id", "home-page-description");
-  homePageDescription.setAttribute("class", "home-page-description");
-  homePageDescription.textContent =
-    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
-  homePage.appendChild(homePageDescription);
+  bodyContainer.appendChild(homePage);
 
   const homePageImage = document.createElement("img");
   homePageImage.setAttribute("id", "home-page-image");
   homePageImage.setAttribute("class", "home-page-image");
   homePageImage.setAttribute("src", "./assets/Images/logo.png");
   homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
-  homePage.appendChild(homePageImage);
+  bodyContainer.appendChild(homePageImage);
+
+  const homePageDescription = document.createElement("p");
+  homePageDescription.setAttribute("id", "home-page-description");
+  homePageDescription.setAttribute("class", "home-page-description");
+  homePageDescription.textContent =
+    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
+  bodyContainer.appendChild(homePageDescription);
 
   const homeLink = document.getElementById("home-link");
 
@@ -757,4 +762,5 @@ const createHomePage = () => {
     createHomePage();
   });
 };
-  createHomePage();
+
+createHomePage();
