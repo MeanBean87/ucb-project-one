@@ -718,3 +718,43 @@ mealPlanGenerator.addEventListener("click", function (event) {
 });
 
 //================================================================================================
+
+const createHomePage = () => {
+  const homePage = document.createElement("div");
+  homePage.setAttribute("id", "home-page");
+  homePage.setAttribute("class", "home-page");
+  homePage.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
+  mainContainer.appendChild(homePage);
+
+  const homePageTitle = document.createElement("h1");
+  homePageTitle.setAttribute("id", "home-page-title");
+  homePageTitle.setAttribute("class", "home-page-title");
+  homePageTitle.textContent = "Meal Plan Generator";
+  homePage.appendChild(homePageTitle);
+
+  const homePageDescription = document.createElement("p");
+  homePageDescription.setAttribute("id", "home-page-description");
+  homePageDescription.setAttribute("class", "home-page-description");
+  homePageDescription.textContent =
+    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type.";
+  homePage.appendChild(homePageDescription);
+
+  const homePageImage = document.createElement("img");
+  homePageImage.setAttribute("id", "home-page-image");
+  homePageImage.setAttribute("class", "home-page-image");
+  homePageImage.setAttribute("src", "./assets/Images/logo.png");
+  homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
+  homePage.appendChild(homePageImage);
+
+  const homeLink = document.getElementById("home-link");
+
+  homeLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    clearMainContainer();
+    createHomePage();
+  });
+};
+  createHomePage();
