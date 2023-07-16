@@ -308,12 +308,13 @@ const startFunction = async (
   let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
   let macroNutrients = calculateMacroNutrients(tdee, goal);
   let dividedMeals = divideMeals(tdee, macroNutrients);
+  console.log(dividedMeals);
   let mealObj = await getFood(dividedMeals);
   let mealObjString = JSON.stringify(mealObj);
   console.log(mealObjString);
   const dateString = new Date().toISOString();
   const appendedName = name + " " + dateString; 
-  localStorage.setItem(appendedName, mealObjString);
+  localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
 };
 
 const getFood = async (totalIntakeObj) => {
@@ -357,11 +358,6 @@ const getFood = async (totalIntakeObj) => {
 
 //================================================================================================
 
-const clearMainContainer = () => {
-  while (mainContainer.firstChild) {
-    mainContainer.removeChild(mainContainer.firstChild);
-  }
-};
 
 //TDEE QUESTIONNAIRE==============================================================================
 const createTDEEQuestionnaire = () => {
@@ -469,8 +465,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireHeightInput);
 
   //Form Height Input Label
-  const tdeeQuestionnaireHeightLabel = document.createElement("label");
-  tdeeQuestionnaireHeightLabel.setAttribute("for", "tdee-questionnaire-height");
+  const tdeeQuestionnaireHeightLabel = document.createElement("p");
   tdeeQuestionnaireHeightLabel.setAttribute(
     "id",
     "tdee-questionnaire-height-label"
@@ -623,156 +618,33 @@ const createTDEEQuestionnaire = () => {
 
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
-    startFunction(weight, feet, inches, age, gender, activityLevel, goal, name);
+    
+    startFunction(weight, feet, inches, age, gender, activityLevel, goal, name)
+      .then(() => {
+        removeAppendedElements();
+      })
+      .catch((error) => {
+        console.error("An error occurred during startFunction:", error);
+      });
   });
 };
-
 //================================================================================================
+
+const removeAppendedElements = () => {
+  const tdeeQuestionnaire = document.getElementById("tdee-questionnaire");
+  const parentElement = tdeeQuestionnaire.parentNode;
+  parentElement.removeChild(tdeeQuestionnaire);
+};
+
+
+
 
 //Create Meal Plan==================================================================================
-const searchforMeal = async (query) => {
-  clearMainContainer();
-};
+
 
 //================================================================================================
-const createMealSearchQuestionnaire = () => {
-  const mealSearchQuestionnaire = document.createElement("form");
-  mealSearchQuestionnaire.setAttribute("id", "meal-search-questionnaire");
-  mealSearchQuestionnaire.setAttribute("class", "meal-search-questionnaire");
-  mealSearchQuestionnaire.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  mainContainer.appendChild(mealSearchQuestionnaire);
-
-  //Form Title
-  const mealSearchQuestionnaireTitle = document.createElement("h2");
-  mealSearchQuestionnaireTitle.setAttribute(
-    "id",
-    "meal-search-questionnaire-title"
-  );
-  mealSearchQuestionnaireTitle.setAttribute(
-    "class",
-    "meal-search-questionnaire-title"
-  );
-  mealSearchQuestionnaireTitle.textContent = "Meal Search Questionnaire";
-  mealSearchQuestionnaire.appendChild(mealSearchQuestionnaireTitle);
-
-  // Meal Type
-  const mealTypeContainer = document.createElement("div");
-  mealTypeContainer.setAttribute("class", "meal-type-container");
-  mealTypeContainer.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  mealSearchQuestionnaire.appendChild(mealTypeContainer);
-
-  const mealTypeLabel = document.createElement("label");
-  mealTypeLabel.setAttribute("for", "mealType");
-  mealTypeLabel.textContent = "Meal Type: ";
-  mealTypeContainer.appendChild(mealTypeLabel);
-
-  const mealTypeList = document.createElement("ul");
-  mealTypeList.setAttribute("class", "meal-type-list");
-
-  for (const value of values.mealType) {
-    const listItem = document.createElement("li");
-    listItem.setAttribute("class", "meal-type-list-item");
-
-    const checkbox = document.createElement("input");
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("name", "mealType");
-    checkbox.setAttribute("value", value);
-    listItem.appendChild(checkbox);
-
-    const label = document.createElement("label");
-    label.setAttribute("for", value);
-    label.textContent = value;
-    listItem.appendChild(label);
-
-    mealTypeList.appendChild(listItem);
-  }
-
-  mealTypeContainer.appendChild(mealTypeList);
-
-  // Allergies / Health Concerns
-  const allergyContainer = document.createElement("div");
-  allergyContainer.setAttribute("class", "allergy-container");
-  allergyContainer.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  mealSearchQuestionnaire.appendChild(allergyContainer);
-
-  const allergyLabel = document.createElement("label");
-  allergyLabel.setAttribute("for", "allergy-values");
-  allergyLabel.textContent = "Allergies / Health Concerns: ";
-  allergyContainer.appendChild(allergyLabel);
-
-  const allergyList = document.createElement("ul");
-  allergyList.setAttribute("class", "allergy-list");
-
-  for (const value of values.healthValues) {
-    const listItem = document.createElement("li");
-    listItem.setAttribute("class", "allergy-list-item");
-
-    const checkbox = document.createElement("input");
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("name", "allergy-values");
-    checkbox.setAttribute("value", value);
-    listItem.appendChild(checkbox);
-
-    const label = document.createElement("label");
-    label.setAttribute("for", value);
-    label.textContent = value;
-    listItem.appendChild(label);
-
-    allergyList.appendChild(listItem);
-  }
-
-  allergyContainer.appendChild(allergyList);
-
-  const submitButton = document.createElement("button");
-  submitButton.setAttribute("type", "submit");
-  submitButton.setAttribute("id", "meal-search-submit");
-  submitButton.setAttribute("class", "meal-search-submit");
-  submitButton.textContent = "Submit";
-  mealSearchQuestionnaire.appendChild(submitButton);
-
-  submitButton.addEventListener("click", function (event) {
-    event.preventDefault();
-
-    const allergyValues = Array.from(
-      document.getElementsByName("allergy-values")
-    )
-      .filter((checkbox) => checkbox.checked)
-      .map((checkbox) => checkbox.value);
-
-    const mealTypeValues = Array.from(document.getElementsByName("mealType"))
-      .filter((checkbox) => checkbox.checked)
-      .map((checkbox) => checkbox.value);
-
-    const query = {
-      allergies: allergyValues,
-      mealTypes: mealTypeValues,
-    };
-
-    // searchForMeal(query);
-
-    // // const searchforMeal = async (query) => {
-    // //   console.log("Searching for meals with query:", query);
-    // //   // Perform actual search for meals based on the query
-    // // };
-  });
-};
 
 //Global Event Listeners===========================================================================
-mealPlanGenerator.addEventListener("click", function (event) {
-  event.preventDefault();
-  clearMainContainer();
-  createTDEEQuestionnaire();
-  createMealSearchQuestionnaire();
-});
 
 //================================================================================================
 
@@ -783,30 +655,35 @@ const createHomePage = () => {
   homePage.setAttribute(
     "style",
     "display: flex; flex-direction: column; align-items: center;"
-  );
-  bodyContainer.appendChild(homePage);
-
-  const homePageImage = document.createElement("img");
-  homePageImage.setAttribute("id", "home-page-image");
-  homePageImage.setAttribute("class", "home-page-image");
-  homePageImage.setAttribute("src", "./assets/Images/logo.png");
-  homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
-  bodyContainer.appendChild(homePageImage);
-
-  const homePageDescription = document.createElement("p");
-  homePageDescription.setAttribute("id", "home-page-description");
-  homePageDescription.setAttribute("class", "home-page-description");
-  homePageDescription.textContent =
+    );
+    bodyContainer.appendChild(homePage);
+    
+    const homePageImage = document.createElement("img");
+    homePageImage.setAttribute("id", "home-page-image");
+    homePageImage.setAttribute("class", "home-page-image");
+    homePageImage.setAttribute("src", "./assets/Images/logo.png");
+    homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
+    bodyContainer.appendChild(homePageImage);
+    
+    const homePageDescription = document.createElement("p");
+    homePageDescription.setAttribute("id", "home-page-description");
+    homePageDescription.setAttribute("class", "home-page-description");
+    homePageDescription.textContent =
     "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
-  bodyContainer.appendChild(homePageDescription);
-
-  const homeLink = document.getElementById("home-link");
-
-  homeLink.addEventListener("click", function (event) {
+    bodyContainer.appendChild(homePageDescription);
+    
+    const homeLink = document.getElementById("home-link");
+    
+    homeLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      clearMainContainer();
+      createHomePage();
+    });
+  };
+  
+  createHomePage();
+  
+  mealPlanGenerator.addEventListener("click", function (event) {
     event.preventDefault();
-    clearMainContainer();
-    createHomePage();
+    createTDEEQuestionnaire();
   });
-};
-
-createHomePage();
