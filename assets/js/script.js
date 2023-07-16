@@ -299,9 +299,9 @@ const divideMeals = (tdee, macroNutrients) => {
 //================================================================================================
 
 const clearMainContainer = () => {
-  mainContainer.forEach((element) => {
-    element.remove();
-  });
+  while (mainContainer.firstChild) {
+    mainContainer.removeChild(mainContainer.firstChild);
+  }
 };
 
 //TDEE QUESTIONNAIRE==============================================================================
@@ -600,40 +600,6 @@ const createMealSearchQuestionnaire = () => {
   mealSearchQuestionnaireTitle.textContent = "Meal Search Questionnaire";
   mealSearchQuestionnaire.appendChild(mealSearchQuestionnaireTitle);
 
-  // Allergies / Health Concerns
-  const allergyContainer = document.createElement("div");
-  allergyContainer.setAttribute("class", "allergy-container");
-  allergyContainer.setAttribute("style", "display: flex; flex-direction: column; align-items: center;");
-
-  const allergyLabel = document.createElement("label");
-  allergyLabel.setAttribute("for", "allergy-values");
-  allergyLabel.textContent = "Allergies / Health Concerns: ";
-  allergyContainer.appendChild(allergyLabel);
-
-  const allergyList = document.createElement("ul");
-  allergyList.setAttribute("class", "allergy-list");
-
-  for (const value of values.healthValues) {
-    const listItem = document.createElement("li");
-    listItem.setAttribute("class", "allergy-list-item");
-
-    const checkbox = document.createElement("input");
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("name", "allergy-values");
-    checkbox.setAttribute("value", value);
-    listItem.appendChild(checkbox);
-
-    const label = document.createElement("label");
-    label.setAttribute("for", value);
-    label.textContent = value;
-    listItem.appendChild(label);
-
-    allergyList.appendChild(listItem);
-  }
-
-  allergyContainer.appendChild(allergyList);
-  mealSearchQuestionnaire.appendChild(allergyContainer);
-
   // Meal Type
   const mealTypeContainer = document.createElement("div");
   mealTypeContainer.setAttribute("class", "meal-type-container");
@@ -669,10 +635,49 @@ const createMealSearchQuestionnaire = () => {
     mealTypeList.appendChild(listItem);
   }
 
-
   mealTypeContainer.appendChild(mealTypeList);
 
-    const submitButton = document.createElement("button");
+  // Allergies / Health Concerns
+  const allergyContainer = document.createElement("div");
+  allergyContainer.setAttribute(
+    "class",
+    "allergy-container"
+  );
+  allergyContainer.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
+  mealSearchQuestionnaire.appendChild(allergyContainer);
+
+  const allergyLabel = document.createElement("label");
+  allergyLabel.setAttribute("for", "allergy-values");
+  allergyLabel.textContent = "Allergies / Health Concerns: ";
+  allergyContainer.appendChild(allergyLabel);
+
+  const allergyList = document.createElement("ul");
+  allergyList.setAttribute("class", "allergy-list");
+
+  for (const value of values.healthValues) {
+    const listItem = document.createElement("li");
+    listItem.setAttribute("class", "allergy-list-item");
+
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("name", "allergy-values");
+    checkbox.setAttribute("value", value);
+    listItem.appendChild(checkbox);
+
+    const label = document.createElement("label");
+    label.setAttribute("for", value);
+    label.textContent = value;
+    listItem.appendChild(label);
+
+    allergyList.appendChild(listItem);
+  }
+
+  allergyContainer.appendChild(allergyList);
+
+  const submitButton = document.createElement("button");
   submitButton.setAttribute("type", "submit");
   submitButton.setAttribute("id", "meal-search-submit");
   submitButton.setAttribute("class", "meal-search-submit");
@@ -702,18 +707,54 @@ const createMealSearchQuestionnaire = () => {
     // //   // Perform actual search for meals based on the query
     // // };
   });
-
-  mealTypeContainer.appendChild(mealTypeLabel);
-  mealTypeContainer.appendChild(mealTypeSelect);
-
 };
 
 //Global Event Listeners===========================================================================
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log(event.target);
+  clearMainContainer();
   createTDEEQuestionnaire();
   createMealSearchQuestionnaire();
 });
 
 //================================================================================================
+
+const createHomePage = () => {
+  const homePage = document.createElement("div");
+  homePage.setAttribute("id", "home-page");
+  homePage.setAttribute("class", "home-page");
+  homePage.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
+  mainContainer.appendChild(homePage);
+
+  const homePageTitle = document.createElement("h1");
+  homePageTitle.setAttribute("id", "home-page-title");
+  homePageTitle.setAttribute("class", "home-page-title");
+  homePageTitle.textContent = "Meal Plan Generator";
+  homePage.appendChild(homePageTitle);
+
+  const homePageDescription = document.createElement("p");
+  homePageDescription.setAttribute("id", "home-page-description");
+  homePageDescription.setAttribute("class", "home-page-description");
+  homePageDescription.textContent =
+    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
+  homePage.appendChild(homePageDescription);
+
+  const homePageImage = document.createElement("img");
+  homePageImage.setAttribute("id", "home-page-image");
+  homePageImage.setAttribute("class", "home-page-image");
+  homePageImage.setAttribute("src", "./assets/Images/logo.png");
+  homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
+  homePage.appendChild(homePageImage);
+
+  const homeLink = document.getElementById("home-link");
+
+  homeLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    clearMainContainer();
+    createHomePage();
+  });
+};
+  createHomePage();
