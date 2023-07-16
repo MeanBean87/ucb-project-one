@@ -2,7 +2,7 @@ const mainContainer = document.getElementById("main-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
 
 let tdee = 0;
-d;
+
 //Fetch functions==================================================================================
 const fetchEdamamObj = async (queryString) => {
   const appId = `ea339611`;
@@ -191,18 +191,10 @@ const startFunction = (
   activityLevel,
   goal
 ) => {
-  let weight = weight;
-  let feet = feet;
-  let inches = inches;
-  let age = age;
-  let gender = gender;
-  let activityLevel = activityLevel;
-  let goal = goal;
-
   let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
   let macroNutrients = calculateMacroNutrients(tdee, goal);
-  let meals = divideMeals(tdee, macroNutrients);
-  console.log(meals);
+  console.log(divideMeals(tdee, macroNutrients));
+  return divideMeals(tdee, macroNutrients);
 };
 
 const calculateTDEE = (
@@ -219,16 +211,14 @@ const calculateTDEE = (
   );
 
   if (gender === "Female") {
-    console.log(
-      (tdee =
-        calculateFemaleBMR(convertedWeight, convertedHeight, age) *
-        activityLevel[selectedActivityLevel])
+    return (
+      calculateFemaleBMR(convertedWeight, convertedHeight, age) *
+      activityLevel[selectedActivityLevel]
     );
   } else {
-    console.log(
-      (tdee =
-        calculateMaleBMR(convertedWeight, convertedHeight, age) *
-        activityLevel[selectedActivityLevel])
+    return (
+      calculateMaleBMR(convertedWeight, convertedHeight, age) *
+      activityLevel[selectedActivityLevel]
     );
   }
 };
@@ -277,6 +267,7 @@ const divideMeals = (tdee, macroNutrients) => {
   const gramsOfCarbohydrates = Math.round(caloriesFromCarbohydrates / 4);
   const gramsOfProtein = Math.round(caloriesFromProtein / 4);
   const gramsOfFat = Math.round(caloriesFromFat / 9);
+  console.log(gramsOfCarbohydrates, gramsOfProtein, gramsOfFat);
 
   const meals = {
     breakfast: {
@@ -285,7 +276,7 @@ const divideMeals = (tdee, macroNutrients) => {
       fat: Math.round(gramsOfFat * 0.25),
     },
     lunch: {
-      carbohydrates: Math.round(gramsOfCarbohydrates * 0.35),
+      carbohydrates: parseInt(Math.round(gramsOfCarbohydrates * 0.35)),
       protein: Math.round(gramsOfProtein * 0.35),
       fat: Math.round(gramsOfFat * 0.35),
     },
