@@ -299,9 +299,9 @@ const divideMeals = (tdee, macroNutrients) => {
 //================================================================================================
 
 const clearMainContainer = () => {
-  mainContainer.forEach((element) => {
-    element.remove();
-  });
+  while (mainContainer.firstChild) {
+    mainContainer.removeChild(mainContainer.firstChild);
+  }
 };
 
 //TDEE QUESTIONNAIRE==============================================================================
@@ -712,7 +712,7 @@ const createMealSearchQuestionnaire = () => {
 //Global Event Listeners===========================================================================
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log(event.target);
+  clearMainContainer();
   createTDEEQuestionnaire();
   createMealSearchQuestionnaire();
 });
