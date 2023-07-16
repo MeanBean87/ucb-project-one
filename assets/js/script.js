@@ -583,12 +583,36 @@ const createMealSearchQuestionnaire = () => {
 
   mealTypeContainer.appendChild(mealTypeList);
 
-  const submitButton = document.createElement("button");
+    const submitButton = document.createElement("button");
   submitButton.setAttribute("type", "submit");
   submitButton.setAttribute("id", "meal-search-submit");
   submitButton.setAttribute("class", "meal-search-submit");
-  submitButton.textContent = "Search";
+  submitButton.textContent = "Submit";
   mealSearchQuestionnaire.appendChild(submitButton);
+
+  submitButton.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const allergyValues = Array.from(document.getElementsByName("allergy-values"))
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.value);
+
+    const mealTypeValues = Array.from(document.getElementsByName("mealType"))
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.value);
+
+    const query = {
+      allergies: allergyValues,
+      mealTypes: mealTypeValues,
+    };
+
+    // searchForMeal(query);
+
+    // // const searchforMeal = async (query) => {
+    // //   console.log("Searching for meals with query:", query);
+    // //   // Perform actual search for meals based on the query
+    // // };
+  });
 };
 
 
