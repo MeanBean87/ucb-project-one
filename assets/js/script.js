@@ -582,6 +582,13 @@ const createMealSearchQuestionnaire = () => {
   }
 
   mealTypeContainer.appendChild(mealTypeList);
+
+  const submitButton = document.createElement("button");
+  submitButton.setAttribute("type", "submit");
+  submitButton.setAttribute("id", "meal-search-submit");
+  submitButton.setAttribute("class", "meal-search-submit");
+  submitButton.textContent = "Search";
+  mealSearchQuestionnaire.appendChild(submitButton);
 };
 
 
