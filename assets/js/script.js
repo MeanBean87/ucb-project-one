@@ -739,7 +739,7 @@ const createHomePage = () => {
   homePageDescription.setAttribute("id", "home-page-description");
   homePageDescription.setAttribute("class", "home-page-description");
   homePageDescription.textContent =
-    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type.";
+    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
   homePage.appendChild(homePageDescription);
 
   const homePageImage = document.createElement("img");
