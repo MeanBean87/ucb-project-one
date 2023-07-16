@@ -290,6 +290,7 @@ const divideMeals = (tdee, macroNutrients) => {
       protein: Math.round(gramsOfProtein * 0.1),
       fat: Math.round(gramsOfFat * 0.1),
     },
+    "tdee": tdee
   };
 
   return meals;
