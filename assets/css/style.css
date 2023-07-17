@@ -178,12 +178,10 @@ span {
   text-align: center;
 }
 
-.tdee-questionnaire-height label {
-
-.tdee-questionnaire-height input {
+/* .tdee-questionnaire-height input {
   margin: .25rem;
   padding: .25rem;
   border-radius: 10px;
   border: 1px solid var(--dark-grey);
   box-shadow: 0 0 10px var(--dark-grey);
-}
+} */
