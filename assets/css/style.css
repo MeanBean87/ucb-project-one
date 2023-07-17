@@ -10,12 +10,13 @@
   --white-2: #ffffffff;
 }
 
-#Logo { 
+#home-link { 
   animation: jackInTheBox;
   animation-duration: 2.2s;
 }
 
-#Logo:active {
+#home-link:active {
   animation: rollOut;
-  animation-duration: 10s;
+  animation-delay: 3;
+  animation-duration: 3s;
 }

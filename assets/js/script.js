@@ -1,6 +1,7 @@
 import { calculateTDEE, calculateMacroNutrients, divideMeals, getFood} from "./calculateTdee.js";
 import { createTDEEQuestionnaire } from "./tdeeQuestionnaire.js";
 import { createMealPlan } from "./createMealPlan.js";
+import { mainContainer } from "./constants.js";
 
 const bodyContainer = document.querySelector(".body-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
@@ -65,6 +66,16 @@ function clearMainContainer() {
   }
 }
 
+const homeLink = document.getElementById('home-link');
+homeLink.addEventListener('click', function (event) {
+  event.preventDefault();
+  clearMainContainer();
+  createTDEEQuestionnaire();
+});
+
+homeLink.onclick = function () {
+  setTimeout(function(){},2000);
+};
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
