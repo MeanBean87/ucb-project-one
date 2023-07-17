@@ -7,3 +7,13 @@
   --silver: #a4a5a3ff;
   --white-2: #ffffffff;
 }
+
+#Logo { 
+  animation: jackInTheBox;
+  animation-duration: 2.2s;
+}
+
+#Logo:active {
+  animation: rollOut;
+  animation-duration: 10s;
+}
