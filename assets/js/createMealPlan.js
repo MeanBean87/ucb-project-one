@@ -10,6 +10,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
   const canvas = document.createElement("canvas");
   canvas.setAttribute("id", "meal-plan-chart");
   canvas.setAttribute("class", "meal-plan-chart");
+
   mainContainer.appendChild(canvas);
 
   const labels = [];
@@ -67,6 +68,9 @@ const createMealPlan = (dividedMeals, mealObj) => {
       },
     },
   });
+
+  canvas.setAttribute("width", "400");
+  canvas.setAttribute("height", "400");
 
   const mealPlanContainer = document.createElement("div");
   mealPlanContainer.setAttribute("class", "dropdown-container");
