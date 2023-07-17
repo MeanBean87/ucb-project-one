@@ -4,7 +4,29 @@ import { createMealPlan } from "./createMealPlan.js";
 
 const bodyContainer = document.querySelector(".body-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
-const fetchExerciseObj = async (queryString) => {};
+const fetchExerciseObj = async (queryString) => {
+  const apiKey = `KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw`;
+  const url = `https://api.api-ninjas.com/v1/exercises?muscle=${queryString}`;
+
+  try {
+    const response = await fetch(`${url}`, {
+      method: 'GET',
+      headers: {
+        'X-Api-Key': `${apiKey}`,  
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Error: ' + response.status);
+    }
+
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 //================================================================================================
 
 //TDEE Algorithm==================================================================================
