@@ -1,17 +1,26 @@
 import { mainContainer } from "./constants.js";
 
 const createMealPlan = (dividedMeals, mealObj) => {
-  const canvasCheck = document.getElementById("meal-plan-chart");
+  const chartContainerCheck = document.querySelector(".chart-container");
 
-  if (canvasCheck) {
-    canvasCheck.remove();
+  if (chartContainerCheck) {
+    chartContainerCheck.remove();
   }
+
+  const chartContainer = document.createElement("div");
+  chartContainer.setAttribute("class", "chart-container");
+  mainContainer.appendChild(chartContainer);
+  chartContainer.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
+
   console.log(mealObj);
   const canvas = document.createElement("canvas");
   canvas.setAttribute("id", "meal-plan-chart");
   canvas.setAttribute("class", "meal-plan-chart");
 
-  mainContainer.appendChild(canvas);
+  chartContainer.appendChild(canvas);
 
   const labels = [];
   const calories = [];
@@ -69,9 +78,6 @@ const createMealPlan = (dividedMeals, mealObj) => {
     },
   });
 
-  canvas.setAttribute("width", "400");
-  canvas.setAttribute("height", "400");
-
   const mealPlanContainer = document.createElement("div");
   mealPlanContainer.setAttribute("class", "dropdown-container");
   mainContainer.appendChild(mealPlanContainer);
@@ -81,7 +87,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
   selectMealPlan.setAttribute("id", "select-meal-items");
   mealPlanContainer.appendChild(selectMealPlan);
 
-  const mealOptions = ["Breakfast", "Lunch", "Dinner", "Snacks"];
+  const mealOptions = ["Select Meal", "Breakfast", "Lunch", "Dinner", "Snacks"];
 
   mealOptions.forEach((meal) => {
     const option = document.createElement("option");
@@ -92,6 +98,12 @@ const createMealPlan = (dividedMeals, mealObj) => {
 
   selectMealPlan.addEventListener("change", function () {
     const selectedMeal = this.value;
+    const oldList = document.querySelector(".meal-plan-list");
+
+    if (oldList) {
+      mealPlanContainer.removeChild(oldList);
+    }
+
     let selection;
 
     switch (selectedMeal) {
@@ -109,28 +121,30 @@ const createMealPlan = (dividedMeals, mealObj) => {
         break;
       default:
         console.log("Invalid selection.");
-        break;
+        return;
     }
 
     const unorderedList = document.createElement("ul");
+    unorderedList.setAttribute("class", "meal-plan-list");
 
     if (selection) {
       Object.values(selection.hits).forEach((item) => {
-        const recipeContainer = document.createElement("div");
-        recipeContainer.setAttribute("class", "recipe-container");
+          const recipeContainer = document.createElement("div");
+          recipeContainer.setAttribute("class", "recipe-container");
 
-        const listItem = document.createElement("img");
-        listItem.setAttribute("class", "meal-plan-image");
-        listItem.setAttribute("alt", item.recipe.label);
-        listItem.setAttribute("title", item.recipe.label);
-        listItem.setAttribute("width", "200");
-        listItem.setAttribute("height", "200");
+          const listItem = document.createElement("img");
+          listItem.setAttribute("class", "meal-plan-image");
+          listItem.setAttribute("alt", item.recipe.label);
+          listItem.setAttribute("title", item.recipe.label);
+          listItem.setAttribute("width", "200");
+          listItem.setAttribute("height", "200");
+          listItem.setAttribute("src", item.recipe.image);
 
-        listItem.addEventListener("error", function () {
-          this.src = "http://via.placeholder.com/200x200";
-        });
+          listItem.addEventListener("error", function (event) {
+            event.preventDefault();
+            this.src = "http://via.placeholder.com/200x200";
+          });
 
-        listItem.src = item.recipe.image;
         recipeContainer.appendChild(listItem);
 
         const link = document.createElement("a");
@@ -158,7 +172,6 @@ const createMealPlan = (dividedMeals, mealObj) => {
         unorderedList.appendChild(recipeContainer);
       });
     }
-
     mealPlanContainer.appendChild(unorderedList);
   });
 };

@@ -1,4 +1,9 @@
-import { calculateTDEE, calculateMacroNutrients, divideMeals, getFood} from "./calculateTdee.js";
+import {
+  calculateTDEE,
+  calculateMacroNutrients,
+  divideMeals,
+  getFood,
+} from "./calculateTdee.js";
 import { createTDEEQuestionnaire } from "./tdeeQuestionnaire.js";
 import { createMealPlan } from "./createMealPlan.js";
 import { mainContainer } from "./constants.js";
@@ -12,24 +17,23 @@ const fetchExerciseObj = async (queryString) => {
 
   try {
     const response = await fetch(`${url}`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'X-Api-Key': `${apiKey}`,  
-        'Content-Type': 'application/json'
-      }
+        "X-Api-Key": `${apiKey}`,
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
-      throw new Error('Error: ' + response.status);
+      throw new Error("Error: " + response.status);
     }
 
     const result = await response.json();
     console.log(result);
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 };
-
 
 const createWorkout = () => {
   const workoutPlan = document.createElement("form");
@@ -46,7 +50,6 @@ const createWorkout = () => {
   workoutPlanTitle.setAttribute("class", "workout-plan-title text-white");
   workoutPlanTitle.textContent = "Type of Workout";
   workoutPlan.appendChild(workoutPlanTitle);
-
 };
 
 workoutPlanGenerator.addEventListener("click", function (event) {
@@ -75,39 +78,86 @@ const startFunction = async (
     let dividedMeals = divideMeals(tdee, macroNutrients);
     let mealObj = await getFood(dividedMeals);
     localStorage.setItem(name, JSON.stringify(dividedMeals));
+    clearMainContainer();
     createMealPlan(dividedMeals, mealObj);
   } catch (error) {
     console.error("An error occurred during startFunction:", error);
   }
 };
 
-function clearMainContainer() {
-  // Get the mainContainer element
-  var mainContainer = document.getElementById('main-container');
+const loadMealPlan = async (dividedMeals) => {
+  try {
+    let mealObj = await getFood(dividedMeals);
+    clearMainContainer();
+    createMealPlan(dividedMeals, mealObj);
+  } catch (error) {
+    console.error("An error occurred during loadMealPlan:", error);
+  }
+};
 
-  // Remove all child elements from the mainContainer
+function clearMainContainer() {
+
+  var mainContainer = document.getElementById("main-container");
+
   while (mainContainer.firstChild) {
     mainContainer.removeChild(mainContainer.firstChild);
   }
 }
 
-const homeLink = document.getElementById('home-link');
+const homeLink = document.getElementById("home-link");
 
-homeLink.addEventListener('click', function (event) {
+homeLink.addEventListener("click", function (event) {
   event.preventDefault();
   setTimeout(() => {
-    clearMainContainer(); createTDEEQuestionnaire();
-  }, 2000); 
+    clearMainContainer();
+    createTDEEQuestionnaire();
+  }, 2000);
 });
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
-  bodyContainer.i
-  clearMainContainer()
+  bodyContainer.i;
+  clearMainContainer();
   createTDEEQuestionnaire();
 });
 //================================================================================================
 
+const dropdownContainer = document.querySelector(".dropdown-container");
+const dropdownTrigger = document.querySelector(".dropdown-trigger");
 
+dropdownTrigger.addEventListener("click", function (event) {
+  event.stopPropagation();
+  dropdownContainer.classList.toggle("show");
+
+  const dropdownOptions = document.querySelector(".dropdown-options");
+  dropdownOptions.innerHTML = "";
+
+  const localStorageKeys = Object.keys(localStorage);
+
+  localStorageKeys.forEach((key) => {
+    const option = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = "#" + key;
+    link.textContent = key;
+    option.appendChild(link);
+    dropdownOptions.appendChild(option);
+
+
+    link.addEventListener("click", function () {
+      const selectedKey = this.textContent;
+      const selectedValue = localStorage.getItem(selectedKey);
+
+      if (selectedValue) {
+        const dividedMeals = JSON.parse(selectedValue);
+        loadMealPlan(dividedMeals);
+        dropdownContainer.classList.toggle("show");
+      }
+    });
+  });
+});
+
+document.getElementById('reload-page').addEventListener('click', function() {
+  location.reload();
+});
 
 export { startFunction };
