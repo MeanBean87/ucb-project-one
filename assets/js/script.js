@@ -74,10 +74,8 @@ const startFunction = async (
     let macroNutrients = calculateMacroNutrients(tdee, goal);
     let dividedMeals = divideMeals(tdee, macroNutrients);
     let mealObj = await getFood(dividedMeals);
-    const dateString = new Date().toISOString();
-    const appendedName = name + " " + dateString;
-    localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
-    createMealPlan(dividedMeals);
+    localStorage.setItem(name, JSON.stringify(dividedMeals));
+    createMealPlan(dividedMeals, mealObj);
   } catch (error) {
     console.error("An error occurred during startFunction:", error);
   }
@@ -109,5 +107,7 @@ mealPlanGenerator.addEventListener("click", function (event) {
   createTDEEQuestionnaire();
 });
 //================================================================================================
+
+
 
 export { startFunction };

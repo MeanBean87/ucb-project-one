@@ -20,3 +20,42 @@
   animation-delay: 3;
   animation-duration: 3s;
 }
+
+#meal-plan-chart{
+ max-width: 50vw;
+  max-height: auto;
+}
+
+#main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.recipe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.recipe-container a {
+  text-decoration: none;
+  color: var(--silver);
+}
+
+.recipe-container a:hover {
+  color: var(--celadon);
+}
