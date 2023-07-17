@@ -43,11 +43,8 @@ const startFunction = async (
     let macroNutrients = calculateMacroNutrients(tdee, goal);
     let dividedMeals = divideMeals(tdee, macroNutrients);
     let mealObj = await getFood(dividedMeals);
-    console.log(mealObj);
-    const dateString = new Date().toISOString();
-    const appendedName = name + " " + dateString;
-    localStorage.setItem(appendedName, JSON.stringify(dividedMeals, mealObj));
-    createMealPlan(dividedMeals);
+    localStorage.setItem(name, JSON.stringify(dividedMeals));
+    createMealPlan(dividedMeals, mealObj);
   } catch (error) {
     console.error("An error occurred during startFunction:", error);
   }
