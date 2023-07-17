@@ -1,16 +1,15 @@
 const mainContainer = document.getElementById("main-container");
 import { activityLevel, goalOptions } from "./constants.js";
 import { startFunction } from "./script.js";
-import { createMealPlan } from "./createMealPlan.js";
 
 const createTDEEQuestionnaire = () => {
   //Create Form
   const tdeeQuestionnaire = document.createElement("form");
   tdeeQuestionnaire.setAttribute("id", "tdee-questionnaire");
-  tdeeQuestionnaire.setAttribute("class", "tdee-questionnaire rounded-lg");
+  tdeeQuestionnaire.setAttribute("class", "tdee-questionnaire rounded-lg mx-32%");
   tdeeQuestionnaire.setAttribute(
     "style",
-    "display: flex; flex-direction: column; align-items: center; margin-left: 32%; margin-right: 32%; background-color: gray; margin-top: 5%;"
+    "display: flex; flex-direction: column; align-items: center; background-color: gray;"
   );
   mainContainer.appendChild(tdeeQuestionnaire);
 
@@ -29,7 +28,7 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaireDescription.setAttribute(
     "class",
-    "tdee-questionnaire-description text-white font-extrabold pb-5"
+    "tdee-questionnaire-description text-white font-extrabold mx-5 pt-5 text-center"
   );
   tdeeQuestionnaireDescription.textContent =
     "Please answer the following questions to calculate your TDEE:";
@@ -39,7 +38,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireName = document.createElement("label");
   tdeeQuestionnaireName.setAttribute("for", "tdee-questionnaire-name");
   tdeeQuestionnaireName.setAttribute("id", "tdee-questionnaire-name-label");
-  tdeeQuestionnaireName.setAttribute("class", "tdee-questionnaire-name-label text-white font-extrabold pb-5");
+  tdeeQuestionnaireName.setAttribute("class", "tdee-questionnaire-name-label text-white font-extrabold pb-1 pt-5");
   tdeeQuestionnaireName.textContent = "Name: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireName);
 
@@ -47,16 +46,17 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireNameInput = document.createElement("input");
   tdeeQuestionnaireNameInput.setAttribute("type", "text");
   tdeeQuestionnaireNameInput.setAttribute("id", "tdee-questionnaire-name");
-  tdeeQuestionnaireNameInput.setAttribute("class", "tdee-questionnaire-name placeholder-black");
+  tdeeQuestionnaireNameInput.setAttribute("class", "tdee-questionnaire-name placeholder-black text-center rounded");
   tdeeQuestionnaireNameInput.setAttribute("name", "tdee-questionnaire-name");
   tdeeQuestionnaireNameInput.setAttribute("placeholder", "Enter your name");
+  tdeeQuestionnaireNameInput.required = true;
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireNameInput);
 
   //Form Age Input Label
   const tdeeQuestionnaireAge = document.createElement("label");
   tdeeQuestionnaireAge.setAttribute("for", "tdee-questionnaire-age");
   tdeeQuestionnaireAge.setAttribute("id", "tdee-questionnaire-age-label");
-  tdeeQuestionnaireAge.setAttribute("class", "tdee-questionnaire-age-label text-white font-extrabold pb-5 border-black b");
+  tdeeQuestionnaireAge.setAttribute("class", "tdee-questionnaire-age-label text-white font-extrabold border-black pb-1 pt-5");
   tdeeQuestionnaireAge.textContent = "Age: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAge);
 
@@ -64,8 +64,9 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireAgeInput = document.createElement("input");
   tdeeQuestionnaireAgeInput.setAttribute("type", "number");
   tdeeQuestionnaireAgeInput.setAttribute("id", "tdee-questionnaire-age");
-  tdeeQuestionnaireAgeInput.setAttribute("class", "tdee-questionnaire-age placeholder-black");
+  tdeeQuestionnaireAgeInput.setAttribute("class", "tdee-questionnaire-age placeholder-black text-center rounded");
   tdeeQuestionnaireAgeInput.setAttribute("placeholder", "Age in years");
+  tdeeQuestionnaireAgeInput.required = true;
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAgeInput);
 
   //Form Gender Input Label
@@ -74,7 +75,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireGender.setAttribute("id", "tdee-questionnaire-gender-label");
   tdeeQuestionnaireGender.setAttribute(
     "class",
-    "tdee-questionnaire-gender-label text-white font-extrabold pb-5"
+    "tdee-questionnaire-gender-label text-white font-extrabold pb-1 pt-5"
   );
   tdeeQuestionnaireGender.textContent = "Please select your gender: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireGender);
@@ -84,10 +85,17 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireGenderInput.setAttribute("id", "tdee-questionnaire-gender");
   tdeeQuestionnaireGenderInput.setAttribute(
     "class",
-    "tdee-questionnaire-gender"
+    "tdee-questionnaire-gender text-center rounded"
   );
 
   // Gender Options
+  const defaultOption = document.createElement("option");
+  defaultOption.setAttribute("value", "");
+  defaultOption.textContent = "Select Gender";
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  tdeeQuestionnaireGenderInput.appendChild(defaultOption);
+
   const options = ["Male", "Female", "Other"];
   for (const option of options) {
     const genderOption = document.createElement("option");
@@ -103,7 +111,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireHeightInput.setAttribute("id", "tdee-questionnaire-height");
   tdeeQuestionnaireHeightInput.setAttribute(
     "class",
-    "tdee-questionnaire-height"
+    "tdee-questionnaire-height pb-1 pt-5"
   );
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireHeightInput);
 
@@ -112,7 +120,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireHeightLabel.setAttribute(
     "id",
     "tdee-questionnaire-height-label");
-  tdeeQuestionnaireHeightLabel.setAttribute("class", "tdee-questionnaire-height-label text-white font-extrabold pb-5");
+  tdeeQuestionnaireHeightLabel.setAttribute("class", "tdee-questionnaire-height-label text-white font-extrabold");
   tdeeQuestionnaireHeightLabel.textContent = "Height: ";
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireHeightLabel);
 
@@ -120,8 +128,9 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireFeetInput = document.createElement("input");
   tdeeQuestionnaireFeetInput.setAttribute("type", "number");
   tdeeQuestionnaireFeetInput.setAttribute("id", "tdee-questionnaire-feet");
-  tdeeQuestionnaireFeetInput.setAttribute("class", "tdee-questionnaire-feet placeholder-black");
+  tdeeQuestionnaireFeetInput.setAttribute("class", "tdee-questionnaire-feet placeholder-black my-1 text-center rounded");
   tdeeQuestionnaireFeetInput.setAttribute("placeholder", "Feet");
+  tdeeQuestionnaireFeetInput.required = true;
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireFeetInput);
 
   //Form Inches Input
@@ -130,9 +139,10 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireInchesInput.setAttribute("id", "tdee-questionnaire-inches");
   tdeeQuestionnaireInchesInput.setAttribute(
     "class",
-    "tdee-questionnaire-inches placeholder-black"
+    "tdee-questionnaire-inches placeholder-black text-center rounded"
   );
   tdeeQuestionnaireInchesInput.setAttribute("placeholder", "Inches");
+  tdeeQuestionnaireInchesInput.required = true;
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireInchesInput);
 
   //Form Weight Input Label
@@ -141,7 +151,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireWeight.setAttribute("id", "tdee-questionnaire-weight-label");
   tdeeQuestionnaireWeight.setAttribute(
     "class",
-    "tdee-questionnaire-weight-label text-white font-extrabold pb-5"
+    "tdee-questionnaire-weight-label text-white font-extrabold pb-1 pt-5"
   );
   tdeeQuestionnaireWeight.textContent = "Weight: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeight);
@@ -152,9 +162,10 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireWeightInput.setAttribute("id", "tdee-questionnaire-weight");
   tdeeQuestionnaireWeightInput.setAttribute(
     "class",
-    "tdee-questionnaire-weight placeholder-black"
+    "tdee-questionnaire-weight placeholder-black text-center rounded"
   );
   tdeeQuestionnaireWeightInput.setAttribute("placeholder", "Weight in lbs");
+  tdeeQuestionnaireWeightInput.required = true;
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeightInput);
 
   //Form Activity Level Input Label
@@ -169,7 +180,7 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaireActivityLevel.setAttribute(
     "class",
-    "tdee-questionnaire-activity-level-label text-white font-extrabold pb-5"
+    "tdee-questionnaire-activity-level-label text-white font-extrabold pb-1 pt-5"
   );
   tdeeQuestionnaireActivityLevel.textContent =
     "Please select your activity level: ";
@@ -183,7 +194,7 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaireActivityLevelInput.setAttribute(
     "class",
-    "tdee-questionnaire-activity-level"
+    "tdee-questionnaire-activity-level text-center rounded"
   );
 
   // Activity Level Options
@@ -204,7 +215,7 @@ const createTDEEQuestionnaire = () => {
   );
   mealQuestionnaireCalories.setAttribute(
     "class",
-    "meal-questionnaire-calories-label text-white font-extrabold pb-5"
+    "meal-questionnaire-calories-label text-white font-extrabold pb-1 pt-5"
   );
   mealQuestionnaireCalories.textContent = "What are your fitness goals: ";
   tdeeQuestionnaire.appendChild(mealQuestionnaireCalories);
@@ -217,7 +228,7 @@ const createTDEEQuestionnaire = () => {
   );
   mealQuestionnaireCaloriesInput.setAttribute(
     "class",
-    "meal-questionnaire-calories"
+    "meal-questionnaire-calories text-center rounded"
   );
 
   //Goal Options
@@ -233,7 +244,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireSubmit = document.createElement("button");
   tdeeQuestionnaireSubmit.setAttribute("type", "submit");
   tdeeQuestionnaireSubmit.setAttribute("id", "tdee-questionnaire-submit");
-  tdeeQuestionnaireSubmit.setAttribute("class", "tdee-questionnaire-submit text-white font-extrabold pb-5");
+  tdeeQuestionnaireSubmit.setAttribute("class", "tdee-questionnaire-submit text-white bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1 m-2 rounded");
   tdeeQuestionnaireSubmit.textContent = "Submit";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireSubmit);
 

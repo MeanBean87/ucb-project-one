@@ -1,4 +1,9 @@
-import { calculateTDEE, calculateMacroNutrients, divideMeals, getFood} from "./calculateTdee.js";
+import {
+  calculateTDEE,
+  calculateMacroNutrients,
+  divideMeals,
+  getFood,
+} from "./calculateTdee.js";
 import { createTDEEQuestionnaire } from "./tdeeQuestionnaire.js";
 import { createMealPlan } from "./createMealPlan.js";
 import { mainContainer } from "./constants.js";
@@ -30,6 +35,7 @@ const fetchExerciseObj = async (queryString) => {
     console.error("Error:", error);
   }
 };
+
 const createWorkout = () => {
   const workoutPlan = document.createElement("form");
   workoutPlan.setAttribute("id", "workout-plan");
@@ -39,6 +45,7 @@ const createWorkout = () => {
     "display: flex; flex-direction: column; align-items: center;"
   );
   mainContainer.appendChild(workoutPlan);
+
 
 //   const workoutPlanTitle = document.createElement("h2");
 //   workoutPlanTitle.setAttribute("id", "workout-plan-title");
@@ -90,6 +97,15 @@ workoutPlanSubmit.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent the form from submitting and refreshing the page
   fetchExerciseObj(event.target.value);
 });
+
+  const workoutPlanTitle = document.createElement("h2");
+  workoutPlanTitle.setAttribute("id", "workout-plan-title");
+  workoutPlanTitle.setAttribute("class", "workout-plan-title text-white");
+  workoutPlanTitle.textContent = "Type of Workout";
+  workoutPlan.appendChild(workoutPlanTitle);
+};
+
+
 workoutPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
   clearMainContainer();
@@ -115,40 +131,91 @@ const startFunction = async (
     let macroNutrients = calculateMacroNutrients(tdee, goal);
     let dividedMeals = divideMeals(tdee, macroNutrients);
     let mealObj = await getFood(dividedMeals);
-    const dateString = new Date().toISOString();
-    const appendedName = name + " " + dateString;
-    localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
-    createMealPlan(dividedMeals);
+    localStorage.setItem(name, JSON.stringify(dividedMeals));
+    clearMainContainer();
+    createMealPlan(dividedMeals, mealObj);
   } catch (error) {
     console.error("An error occurred during startFunction:", error);
   }
 };
 
-function clearMainContainer() {
-  // Get the mainContainer element
-  var mainContainer = document.getElementById('main-container');
+const loadMealPlan = async (dividedMeals) => {
+  try {
+    let mealObj = await getFood(dividedMeals);
+    clearMainContainer();
+    createMealPlan(dividedMeals, mealObj);
+  } catch (error) {
+    console.error("An error occurred during loadMealPlan:", error);
+  }
+};
 
-  // Remove all child elements from the mainContainer
+function clearMainContainer() {
+
+  var mainContainer = document.getElementById("main-container");
+
   while (mainContainer.firstChild) {
     mainContainer.removeChild(mainContainer.firstChild);
   }
 }
 
-const homeLink = document.getElementById('home-link');
+const homeLink = document.getElementById("home-link");
 
-homeLink.addEventListener('click', function (event) {
+homeLink.addEventListener("click", function (event) {
   event.preventDefault();
   setTimeout(() => {
-    clearMainContainer(); createTDEEQuestionnaire();
-  }, 2000); 
+    clearMainContainer();
+    createTDEEQuestionnaire();
+  }, 2000);
 });
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
-  bodyContainer.i
-  clearMainContainer()
+  bodyContainer.i;
+  clearMainContainer();
   createTDEEQuestionnaire();
 });
 //================================================================================================
 
+
 export { startFunction, fetchExerciseObj };
+
+const dropdownContainer = document.querySelector(".dropdown-container");
+const dropdownTrigger = document.querySelector(".dropdown-trigger");
+
+dropdownTrigger.addEventListener("click", function (event) {
+  event.stopPropagation();
+  dropdownContainer.classList.toggle("show");
+
+  const dropdownOptions = document.querySelector(".dropdown-options");
+  dropdownOptions.innerHTML = "";
+
+  const localStorageKeys = Object.keys(localStorage);
+
+  localStorageKeys.forEach((key) => {
+    const option = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = "#" + key;
+    link.textContent = key;
+    option.appendChild(link);
+    dropdownOptions.appendChild(option);
+
+
+    link.addEventListener("click", function () {
+      const selectedKey = this.textContent;
+      const selectedValue = localStorage.getItem(selectedKey);
+
+      if (selectedValue) {
+        const dividedMeals = JSON.parse(selectedValue);
+        loadMealPlan(dividedMeals);
+        dropdownContainer.classList.toggle("show");
+      }
+    });
+  });
+});
+
+document.getElementById('reload-page').addEventListener('click', function() {
+  location.reload();
+});
+
+export { startFunction };
+
