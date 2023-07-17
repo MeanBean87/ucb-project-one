@@ -5,9 +5,10 @@ import { mainContainer } from "./constants.js";
 
 const bodyContainer = document.querySelector(".body-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
+const workoutPlanGenerator = document.getElementById("workout-plan-generator");
 const fetchExerciseObj = async (queryString) => {
   const apiKey = `KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw`;
-  const url = `https://api.api-ninjas.com/v1/exercises?muscle=${queryString}`;
+  const url = `https://api.api-ninjas.com/v1/exercises?type=${queryString}`;
 
   try {
     const response = await fetch(`${url}`, {
@@ -28,6 +29,35 @@ const fetchExerciseObj = async (queryString) => {
     console.error('Error:', error);
   }
 };
+
+
+const createWorkout = () => {
+  const workoutPlan = document.createElement("form");
+  workoutPlan.setAttribute("id", "workout-plan");
+  workoutPlan.setAttribute("class", "workout-plan");
+  workoutPlan.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
+  mainContainer.appendChild(workoutPlan);
+
+  const workoutPlanTitle = document.createElement("h2");
+  workoutPlanTitle.setAttribute("id", "workout-plan-title");
+  workoutPlanTitle.setAttribute("class", "workout-plan-title text-white");
+  workoutPlanTitle.textContent = "Type of Workout";
+  workoutPlan.appendChild(workoutPlanTitle);
+
+};
+
+workoutPlanGenerator.addEventListener("click", function (event) {
+  event.preventDefault();
+  clearMainContainer();
+  createWorkout();
+});
+
+//================================================================================================
+
+//TDEE Algorithm==================================================================================
 
 const startFunction = async (
   weight,
@@ -62,15 +92,13 @@ function clearMainContainer() {
 }
 
 const homeLink = document.getElementById('home-link');
+
 homeLink.addEventListener('click', function (event) {
   event.preventDefault();
-  clearMainContainer();
-  createTDEEQuestionnaire();
+  setTimeout(() => {
+    clearMainContainer(); createTDEEQuestionnaire();
+  }, 2000); 
 });
-
-homeLink.onclick = function () {
-  setTimeout(function(){},2000);
-};
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
