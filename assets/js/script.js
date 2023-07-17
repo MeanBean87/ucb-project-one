@@ -55,12 +55,21 @@ const startFunction = async (
   }
 };
 
+function clearMainContainer() {
+  // Get the mainContainer element
+  var mainContainer = document.getElementById('main-container');
 
+  // Remove all child elements from the mainContainer
+  while (mainContainer.firstChild) {
+    mainContainer.removeChild(mainContainer.firstChild);
+  }
+}
 
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
   bodyContainer.i
+  clearMainContainer()
   createTDEEQuestionnaire();
 });
 //================================================================================================
