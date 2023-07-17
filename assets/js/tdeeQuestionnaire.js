@@ -1,7 +1,6 @@
 const mainContainer = document.getElementById("main-container");
 import { activityLevel, goalOptions } from "./constants.js";
 import { startFunction } from "./script.js";
-import { createMealPlan } from "./createMealPlan.js";
 
 const createTDEEQuestionnaire = () => {
   //Create Form

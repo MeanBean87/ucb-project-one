@@ -27,9 +27,6 @@ const fetchExerciseObj = async (queryString) => {
     console.error('Error:', error);
   }
 };
-//================================================================================================
-
-//TDEE Algorithm==================================================================================
 
 const startFunction = async (
   weight,
@@ -55,14 +52,13 @@ const startFunction = async (
   }
 };
 
-
-
-
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
   bodyContainer.i
   createTDEEQuestionnaire();
 });
 //================================================================================================
+
+
 
 export { startFunction };
