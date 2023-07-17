@@ -17,7 +17,7 @@ const createTDEEQuestionnaire = () => {
   //Form Title
   const tdeeQuestionnaireTitle = document.createElement("h2");
   tdeeQuestionnaireTitle.setAttribute("id", "tdee-questionnaire-title");
-  tdeeQuestionnaireTitle.setAttribute("class", "tdee-questionnaire-title text-white font-extrabold pb-5 text-xl");
+  tdeeQuestionnaireTitle.setAttribute("class", "tdee-questionnaire-title text-white font-extrabold pt-5 text-xl");
   tdeeQuestionnaireTitle.textContent = "TDEE Questionnaire";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireTitle);
 
