@@ -4,12 +4,32 @@ import { createMealPlan } from "./createMealPlan.js";
 
 const bodyContainer = document.querySelector(".body-container");
 const mealPlanGenerator = document.getElementById("meal-plan-generator");
-const fetchExerciseObj = async (queryString) => {};
+const fetchExerciseObj = async (queryString) => {
+  const apiKey = `KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw`;
+  const url = `https://api.api-ninjas.com/v1/exercises?muscle=${queryString}`;
+
+  try {
+    const response = await fetch(`${url}`, {
+      method: 'GET',
+      headers: {
+        'X-Api-Key': `${apiKey}`,  
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Error: ' + response.status);
+    }
+
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 //================================================================================================
 
 //TDEE Algorithm==================================================================================
-
-
 
 const startFunction = async (
   weight,
@@ -35,46 +55,12 @@ const startFunction = async (
   }
 };
 
-//================================================================================================
 
-const createHomePage = () => {
-  const homePage = document.createElement("div");
-  homePage.setAttribute("id", "home-page");
-  homePage.setAttribute("class", "home-page");
-  homePage.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  bodyContainer.appendChild(homePage);
 
-  const homePageImage = document.createElement("img");
-  homePageImage.setAttribute("id", "home-page-image");
-  homePageImage.setAttribute("class", "home-page-image");
-  homePageImage.setAttribute("src", "./assets/Images/logo.png");
-  homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
-  bodyContainer.appendChild(homePageImage);
 
-  const homePageDescription = document.createElement("p");
-  homePageDescription.setAttribute("id", "home-page-description");
-  homePageDescription.setAttribute("class", "home-page-description");
-  homePageDescription.textContent =
-    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
-  bodyContainer.appendChild(homePageDescription);
-
-  const homeLink = document.getElementById("home-link");
-
-  homeLink.addEventListener("click", function (event) {
-    event.preventDefault();
-    clearMainContainer();
-    createHomePage();
-  });
-};
-
-createHomePage();
-
-//Global Event Listeners===========================================================================
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
+  bodyContainer.i
   createTDEEQuestionnaire();
 });
 //================================================================================================
