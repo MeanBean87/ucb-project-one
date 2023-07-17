@@ -70,12 +70,9 @@ const homeLink = document.getElementById('home-link');
 homeLink.addEventListener('click', function (event) {
   event.preventDefault();
   clearMainContainer();
-  createTDEEQuestionnaire();
+  setTimeout(createTDEEQuestionnaire,1000);
 });
 
-homeLink.onclick = function () {
-  setTimeout(function(){},2000);
-};
 
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
