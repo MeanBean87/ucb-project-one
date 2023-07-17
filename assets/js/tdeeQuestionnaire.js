@@ -1,200 +1,8 @@
-import { calculateTDEE, calculateMacroNutrients, divideMeals, getFood} from "./calculateTdee.js";
-import { createTDEEQuestionnaire } from "./tdeeQuestionnaire.js";
+const mainContainer = document.getElementById("main-container");
+import { activityLevel, goalOptions } from "./constants.js";
+import { startFunction } from "./script.js";
 import { createMealPlan } from "./createMealPlan.js";
 
-const bodyContainer = document.querySelector(".body-container");
-const mealPlanGenerator = document.getElementById("meal-plan-generator");
-const fetchExerciseObj = async (queryString) => {};
-//================================================================================================
-
-//TDEE Algorithm==================================================================================
-
-
-
-const startFunction = async (
-  weight,
-  feet,
-  inches,
-  age,
-  gender,
-  activityLevel,
-  goal,
-  name
-) => {
-  try {
-    let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
-    let macroNutrients = calculateMacroNutrients(tdee, goal);
-    let dividedMeals = divideMeals(tdee, macroNutrients);
-    let mealObj = await getFood(dividedMeals);
-    const dateString = new Date().toISOString();
-    const appendedName = name + " " + dateString;
-    localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
-    createMealPlan(dividedMeals);
-  } catch (error) {
-    console.error("An error occurred during startFunction:", error);
-  }
-};
-
-//================================================================================================
-
-const createHomePage = () => {
-  const homePage = document.createElement("div");
-  homePage.setAttribute("id", "home-page");
-  homePage.setAttribute("class", "home-page");
-  homePage.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  bodyContainer.appendChild(homePage);
-
-  const homePageImage = document.createElement("img");
-  homePageImage.setAttribute("id", "home-page-image");
-  homePageImage.setAttribute("class", "home-page-image");
-  homePageImage.setAttribute("src", "./assets/Images/logo.png");
-  homePageImage.setAttribute("alt", "Meal Plan Generator Logo");
-  bodyContainer.appendChild(homePageImage);
-
-  const homePageDescription = document.createElement("p");
-  homePageDescription.setAttribute("id", "home-page-description");
-  homePageDescription.setAttribute("class", "home-page-description");
-  homePageDescription.textContent =
-    "Welcome to the Meal Plan Generator! We will help you generate a meal plan based on your goals and body type. Click Meal Plan Generator on the nav bar to get started!";
-  bodyContainer.appendChild(homePageDescription);
-
-  const homeLink = document.getElementById("home-link");
-
-  homeLink.addEventListener("click", function (event) {
-    event.preventDefault();
-    clearMainContainer();
-    createHomePage();
-  });
-};
-
-createHomePage();
-
-//Global Event Listeners===========================================================================
-mealPlanGenerator.addEventListener("click", function (event) {
-  event.preventDefault();
-  createTDEEQuestionnaire();
-});
-//================================================================================================
-
-export { startFunction };
-=======
-  let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
-  let macroNutrients = calculateMacroNutrients(tdee, goal);
-  console.log(divideMeals(tdee, macroNutrients));
-  return divideMeals(tdee, macroNutrients);
-};
-
-const calculateTDEE = (
-  weight,
-  feet,
-  inches,
-  age,
-  gender,
-  selectedActivityLevel
-) => {
-  let convertedWeight = convertPoundsToKilograms(weight);
-  let convertedHeight = convertInchesToCentimeters(
-    convertImpHeightToBaseInches(feet, inches)
-  );
-
-  if (gender === "Female") {
-    return (
-      calculateFemaleBMR(convertedWeight, convertedHeight, age) *
-      activityLevel[selectedActivityLevel]
-    );
-  } else {
-    return (
-      calculateMaleBMR(convertedWeight, convertedHeight, age) *
-      activityLevel[selectedActivityLevel]
-    );
-  }
-};
-
-const calculateMacroNutrients = (tdee, goal) => {
-  let carbohydrates;
-  let protein;
-  let fat;
-
-  if (goal === "Lose Weight") {
-    carbohydrates = 0.4;
-    protein = 0.4;
-    fat = 0.2;
-  } else if (goal === "Gain Weight") {
-    carbohydrates = 0.5;
-    protein = 0.3;
-    fat = 0.2;
-  } else if (goal === "Build Muscle") {
-    carbohydrates = 0.45;
-    protein = 0.4;
-    fat = 0.15;
-  } else {
-    carbohydrates = 0.45;
-    protein = 0.3;
-    fat = 0.25;
-  }
-
-  if (tdee >= 2500) {
-    carbohydrates += 0.05;
-    fat -= 0.05;
-  } else if (tdee <= 1500) {
-    carbohydrates -= 0.05;
-    fat += 0.05;
-  }
-
-  return { carbohydrates: carbohydrates, protein: protein, fat: fat };
-};
-
-const divideMeals = (tdee, macroNutrients) => {
-  const { carbohydrates, protein, fat } = macroNutrients;
-
-  const caloriesFromCarbohydrates = Math.round(tdee * carbohydrates);
-  const caloriesFromProtein = Math.round(tdee * protein);
-  const caloriesFromFat = Math.round(tdee * fat);
-
-  const gramsOfCarbohydrates = Math.round(caloriesFromCarbohydrates / 4);
-  const gramsOfProtein = Math.round(caloriesFromProtein / 4);
-  const gramsOfFat = Math.round(caloriesFromFat / 9);
-  console.log(gramsOfCarbohydrates, gramsOfProtein, gramsOfFat);
-
-  const meals = {
-    breakfast: {
-      carbohydrates: Math.round(gramsOfCarbohydrates * 0.25),
-      protein: Math.round(gramsOfProtein * 0.25),
-      fat: Math.round(gramsOfFat * 0.25),
-    },
-    lunch: {
-      carbohydrates: parseInt(Math.round(gramsOfCarbohydrates * 0.35)),
-      protein: Math.round(gramsOfProtein * 0.35),
-      fat: Math.round(gramsOfFat * 0.35),
-    },
-    dinner: {
-      carbohydrates: Math.round(gramsOfCarbohydrates * 0.3),
-      protein: Math.round(gramsOfProtein * 0.3),
-      fat: Math.round(gramsOfFat * 0.3),
-    },
-    snacks: {
-      carbohydrates: Math.round(gramsOfCarbohydrates * 0.1),
-      protein: Math.round(gramsOfProtein * 0.1),
-      fat: Math.round(gramsOfFat * 0.1),
-    },
-    "tdee": tdee
-  };
-
-  return meals;
-};
-
-//================================================================================================
-
-const clearMainContainer = () => {
-  while (mainContainer.firstChild) {
-    mainContainer.removeChild(mainContainer.firstChild);
-  }
-};
-
-//TDEE QUESTIONNAIRE==============================================================================
 const createTDEEQuestionnaire = () => {
   //Create Form
   const tdeeQuestionnaire = document.createElement("form");
@@ -209,7 +17,7 @@ const createTDEEQuestionnaire = () => {
   //Form Title
   const tdeeQuestionnaireTitle = document.createElement("h2");
   tdeeQuestionnaireTitle.setAttribute("id", "tdee-questionnaire-title");
-  tdeeQuestionnaireTitle.setAttribute("class", "tdee-questionnaire-title font-extrabold text-white pt-10");
+  tdeeQuestionnaireTitle.setAttribute("class", "tdee-questionnaire-title");
   tdeeQuestionnaireTitle.textContent = "TDEE Questionnaire";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireTitle);
 
@@ -221,7 +29,7 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaireDescription.setAttribute(
     "class",
-    "tdee-questionnaire-description font-extrabold text-white pt-5"
+    "tdee-questionnaire-description"
   );
   tdeeQuestionnaireDescription.textContent =
     "Please answer the following questions to calculate your TDEE:";
@@ -231,7 +39,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireName = document.createElement("label");
   tdeeQuestionnaireName.setAttribute("for", "tdee-questionnaire-name");
   tdeeQuestionnaireName.setAttribute("id", "tdee-questionnaire-name-label");
-  tdeeQuestionnaireName.setAttribute("class", "tdee-questionnaire-name-label font-extrabold text-white pt-5");
+  tdeeQuestionnaireName.setAttribute("class", "tdee-questionnaire-name-label");
   tdeeQuestionnaireName.textContent = "Name: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireName);
 
@@ -248,7 +56,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireAge = document.createElement("label");
   tdeeQuestionnaireAge.setAttribute("for", "tdee-questionnaire-age");
   tdeeQuestionnaireAge.setAttribute("id", "tdee-questionnaire-age-label");
-  tdeeQuestionnaireAge.setAttribute("class", "tdee-questionnaire-age-label font-extrabold text-white pt-3");
+  tdeeQuestionnaireAge.setAttribute("class", "tdee-questionnaire-age-label");
   tdeeQuestionnaireAge.textContent = "Age: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAge);
 
@@ -266,7 +74,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireGender.setAttribute("id", "tdee-questionnaire-gender-label");
   tdeeQuestionnaireGender.setAttribute(
     "class",
-    "tdee-questionnaire-gender-label font-extrabold text-white pt-2"
+    "tdee-questionnaire-gender-label"
   );
   tdeeQuestionnaireGender.textContent = "Please select your gender: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireGender);
@@ -300,20 +108,12 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireHeightInput);
 
   //Form Height Input Label
-  const tdeeQuestionnaireHeightLabel = document.createElement("label");
-  tdeeQuestionnaireHeightLabel.setAttribute(
-    "for",
-    "tdee-questionnaire-height-input"
-  );
+  const tdeeQuestionnaireHeightLabel = document.createElement("p");
   tdeeQuestionnaireHeightLabel.setAttribute(
     "id",
     "tdee-questionnaire-height-label"
   );
   tdeeQuestionnaireHeightLabel.textContent = "Height: ";
-  tdeeQuestionnaireHeightLabel.setAttribute(
-    "class",
-    "tdee-questionnaire-height-label font-extrabold text-white pt-5"
-  );
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireHeightLabel);
 
   //Form Feet Input
@@ -341,7 +141,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireWeight.setAttribute("id", "tdee-questionnaire-weight-label");
   tdeeQuestionnaireWeight.setAttribute(
     "class",
-    "tdee-questionnaire-weight-label font-extrabold text-white pt-5"
+    "tdee-questionnaire-weight-label"
   );
   tdeeQuestionnaireWeight.textContent = "Weight: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeight);
@@ -369,7 +169,7 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaireActivityLevel.setAttribute(
     "class",
-    "tdee-questionnaire-activity-level-label font-extrabold text-white pt-5"
+    "tdee-questionnaire-activity-level-label"
   );
   tdeeQuestionnaireActivityLevel.textContent =
     "Please select your activity level: ";
@@ -404,7 +204,7 @@ const createTDEEQuestionnaire = () => {
   );
   mealQuestionnaireCalories.setAttribute(
     "class",
-    "meal-questionnaire-calories-label font-extrabold text-white pt-5"
+    "meal-questionnaire-calories-label"
   );
   mealQuestionnaireCalories.textContent = "What are your fitness goals: ";
   tdeeQuestionnaire.appendChild(mealQuestionnaireCalories);
@@ -433,7 +233,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireSubmit = document.createElement("button");
   tdeeQuestionnaireSubmit.setAttribute("type", "submit");
   tdeeQuestionnaireSubmit.setAttribute("id", "tdee-questionnaire-submit");
-  tdeeQuestionnaireSubmit.setAttribute("class", "tdee-questionnaire-submit  font-extrabold text-white pt-5");
+  tdeeQuestionnaireSubmit.setAttribute("class", "tdee-questionnaire-submit");
   tdeeQuestionnaireSubmit.textContent = "Submit";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireSubmit);
 
@@ -457,26 +257,24 @@ const createTDEEQuestionnaire = () => {
       "tdee-questionnaire-activity-level"
     ).value;
 
+    const name = document.getElementById("tdee-questionnaire-name").value;
+
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
-    startFunction(weight, feet, inches, age, gender, activityLevel, goal);
+    startFunction(weight, feet, inches, age, gender, activityLevel, goal, name)
+      .then(() => {
+        removeAppendedElements();
+      })
+      .catch((error) => {
+        console.error("An error occurred during startFunction:", error);
+      });
   });
 };
 
-//Global Event Listeners===========================================================================
-mealPlanGenerator.addEventListener("click", function (event) {
-  event.preventDefault();
-  clearMainContainer();
-  createTDEEQuestionnaire();
-});
+const removeAppendedElements = () => {
+  const tdeeQuestionnaire = document.getElementById("tdee-questionnaire");
+  const parentElement = tdeeQuestionnaire.parentNode;
+  parentElement.removeChild(tdeeQuestionnaire);
+};
 
-const logoImage = document.querySelector("img");
-
-// Add event listener to the image
-logoImage.addEventListener("click", function (event) {
-  event.preventDefault();
-  clearMainContainer();
-  createTDEEQuestionnaire();
-});
-//================================================================================================
-
+export { createTDEEQuestionnaire };
