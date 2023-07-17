@@ -10,6 +10,10 @@
   --dark-grey: #181716;
 }
 
+span {
+  font-family: var(--merriweather);
+}
+
 #home-link { 
   animation: jackInTheBox;
   animation-duration: 2.2s;
@@ -119,4 +123,49 @@
   font-family: var(--merriweather);
   font-size: .75rem;
   color: var(--silver);
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  font-family: var(--merriweather);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-options li {
+  padding: 8px;
+}
+
+.dropdown-options li a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.dropdown-options li a:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown-container.show .dropdown-options {
+  display: block;
 }
