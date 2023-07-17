@@ -7,10 +7,10 @@ const createTDEEQuestionnaire = () => {
   //Create Form
   const tdeeQuestionnaire = document.createElement("form");
   tdeeQuestionnaire.setAttribute("id", "tdee-questionnaire");
-  tdeeQuestionnaire.setAttribute("class", "tdee-questionnaire");
+  tdeeQuestionnaire.setAttribute("class", "tdee-questionnaire rounded-lg");
   tdeeQuestionnaire.setAttribute(
     "style",
-    "display: flex; flex-direction: column; align-items: center;"
+    "display: flex; flex-direction: column; align-items: center; margin-left: 32%; margin-right: 32%; background-color: gray; margin-top: 5%;"
   );
   mainContainer.appendChild(tdeeQuestionnaire);
 
@@ -47,7 +47,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireNameInput = document.createElement("input");
   tdeeQuestionnaireNameInput.setAttribute("type", "text");
   tdeeQuestionnaireNameInput.setAttribute("id", "tdee-questionnaire-name");
-  tdeeQuestionnaireNameInput.setAttribute("class", "tdee-questionnaire-name");
+  tdeeQuestionnaireNameInput.setAttribute("class", "tdee-questionnaire-name placeholder-black");
   tdeeQuestionnaireNameInput.setAttribute("name", "tdee-questionnaire-name");
   tdeeQuestionnaireNameInput.setAttribute("placeholder", "Enter your name");
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireNameInput);
@@ -56,7 +56,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireAge = document.createElement("label");
   tdeeQuestionnaireAge.setAttribute("for", "tdee-questionnaire-age");
   tdeeQuestionnaireAge.setAttribute("id", "tdee-questionnaire-age-label");
-  tdeeQuestionnaireAge.setAttribute("class", "tdee-questionnaire-age-label text-white font-extrabold pb-5");
+  tdeeQuestionnaireAge.setAttribute("class", "tdee-questionnaire-age-label text-white font-extrabold pb-5 border-black b");
   tdeeQuestionnaireAge.textContent = "Age: ";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAge);
 
@@ -64,7 +64,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireAgeInput = document.createElement("input");
   tdeeQuestionnaireAgeInput.setAttribute("type", "number");
   tdeeQuestionnaireAgeInput.setAttribute("id", "tdee-questionnaire-age");
-  tdeeQuestionnaireAgeInput.setAttribute("class", "tdee-questionnaire-age");
+  tdeeQuestionnaireAgeInput.setAttribute("class", "tdee-questionnaire-age placeholder-black");
   tdeeQuestionnaireAgeInput.setAttribute("placeholder", "Age in years");
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAgeInput);
 
@@ -120,7 +120,7 @@ const createTDEEQuestionnaire = () => {
   const tdeeQuestionnaireFeetInput = document.createElement("input");
   tdeeQuestionnaireFeetInput.setAttribute("type", "number");
   tdeeQuestionnaireFeetInput.setAttribute("id", "tdee-questionnaire-feet");
-  tdeeQuestionnaireFeetInput.setAttribute("class", "tdee-questionnaire-feet");
+  tdeeQuestionnaireFeetInput.setAttribute("class", "tdee-questionnaire-feet placeholder-black");
   tdeeQuestionnaireFeetInput.setAttribute("placeholder", "Feet");
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireFeetInput);
 
@@ -130,7 +130,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireInchesInput.setAttribute("id", "tdee-questionnaire-inches");
   tdeeQuestionnaireInchesInput.setAttribute(
     "class",
-    "tdee-questionnaire-inches"
+    "tdee-questionnaire-inches placeholder-black"
   );
   tdeeQuestionnaireInchesInput.setAttribute("placeholder", "Inches");
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireInchesInput);
@@ -152,7 +152,7 @@ const createTDEEQuestionnaire = () => {
   tdeeQuestionnaireWeightInput.setAttribute("id", "tdee-questionnaire-weight");
   tdeeQuestionnaireWeightInput.setAttribute(
     "class",
-    "tdee-questionnaire-weight"
+    "tdee-questionnaire-weight placeholder-black"
   );
   tdeeQuestionnaireWeightInput.setAttribute("placeholder", "Weight in lbs");
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeightInput);
