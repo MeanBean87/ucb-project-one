@@ -67,10 +67,12 @@ function clearMainContainer() {
 }
 
 const homeLink = document.getElementById('home-link');
+
 homeLink.addEventListener('click', function (event) {
   event.preventDefault();
-  clearMainContainer();
-  createTDEEQuestionnaire();
+  setTimeout(() => {
+    clearMainContainer(); createTDEEQuestionnaire();
+  }, 2000); 
 });
 
 homeLink.onclick = function () {
