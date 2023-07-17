@@ -10,8 +10,10 @@ const createMealPlan = (dividedMeals, mealObj) => {
   const chartContainer = document.createElement("div");
   chartContainer.setAttribute("class", "chart-container");
   mainContainer.appendChild(chartContainer);
-  chartContainer.setAttribute("style", "display: flex; flex-direction: column; align-items: center;");
-  
+  chartContainer.setAttribute(
+    "style",
+    "display: flex; flex-direction: column; align-items: center;"
+  );
 
   console.log(mealObj);
   const canvas = document.createElement("canvas");
@@ -85,7 +87,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
   selectMealPlan.setAttribute("id", "select-meal-items");
   mealPlanContainer.appendChild(selectMealPlan);
 
-  const mealOptions = ["Breakfast", "Lunch", "Dinner", "Snacks"];
+  const mealOptions = ["Select Meal", "Breakfast", "Lunch", "Dinner", "Snacks"];
 
   mealOptions.forEach((meal) => {
     const option = document.createElement("option");
@@ -96,6 +98,13 @@ const createMealPlan = (dividedMeals, mealObj) => {
 
   selectMealPlan.addEventListener("change", function () {
     const selectedMeal = this.value;
+    const oldList = document.querySelector(".meal-plan-list");
+    
+    if (oldList) {
+      mealPlanContainer.removeChild(oldList);
+    }
+
+
     let selection;
 
     switch (selectedMeal) {
@@ -113,7 +122,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
         break;
       default:
         console.log("Invalid selection.");
-        break;
+        return;
     }
 
     const unorderedList = document.createElement("ul");
@@ -163,7 +172,6 @@ const createMealPlan = (dividedMeals, mealObj) => {
         unorderedList.appendChild(recipeContainer);
       });
     }
-
     mealPlanContainer.appendChild(unorderedList);
   });
 };
