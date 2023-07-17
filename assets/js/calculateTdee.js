@@ -232,31 +232,6 @@ const getFood = async (totalIntakeObj) => {
   return {breakfastObj, lunchObj, dinnerObj, snacksObj };
 };
 
-const startFunction = async (
-  weight,
-  feet,
-  inches,
-  age,
-  gender,
-  activityLevel,
-  goal,
-  name
-) => {
-  try {
-    let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
-    let macroNutrients = calculateMacroNutrients(tdee, goal);
-    let dividedMeals = divideMeals(tdee, macroNutrients);
-    let mealObj = await getFood(dividedMeals);
-    console.log(mealObj);
-    const dateString = new Date().toISOString();
-    const appendedName = name + " " + dateString;
-    localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
-    createMealPlan(dividedMeals, mealObj);
-  } catch (error) {
-    console.error("An error occurred during startFunction:", error);
-  }
-};
-
 export {
   calculateTDEE,
   calculateMacroNutrients,
@@ -264,6 +239,5 @@ export {
   goalOptions,
   activityLevel,
   getFood,
-  startFunction,
   fetchExerciseObj, 
 };

@@ -43,18 +43,30 @@ const startFunction = async (
     let macroNutrients = calculateMacroNutrients(tdee, goal);
     let dividedMeals = divideMeals(tdee, macroNutrients);
     let mealObj = await getFood(dividedMeals);
+    console.log(mealObj);
     const dateString = new Date().toISOString();
     const appendedName = name + " " + dateString;
-    localStorage.setItem(appendedName, JSON.stringify(dividedMeals));
+    localStorage.setItem(appendedName, JSON.stringify(dividedMeals, mealObj));
     createMealPlan(dividedMeals);
   } catch (error) {
     console.error("An error occurred during startFunction:", error);
   }
 };
 
+function clearMainContainer() {
+  // Get the mainContainer element
+  var mainContainer = document.getElementById('main-container');
+
+  // Remove all child elements from the mainContainer
+  while (mainContainer.firstChild) {
+    mainContainer.removeChild(mainContainer.firstChild);
+  }
+}
+
 mealPlanGenerator.addEventListener("click", function (event) {
   event.preventDefault();
   bodyContainer.i
+  clearMainContainer()
   createTDEEQuestionnaire();
 });
 //================================================================================================
