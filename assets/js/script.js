@@ -125,7 +125,8 @@ mealPlanGenerator.addEventListener("click", function (event) {
 const dropdownContainer = document.querySelector(".dropdown-container");
 const dropdownTrigger = document.querySelector(".dropdown-trigger");
 
-dropdownTrigger.addEventListener("click", function () {
+dropdownTrigger.addEventListener("click", function (event) {
+  event.stopPropagation();
   dropdownContainer.classList.toggle("show");
 
   const dropdownOptions = document.querySelector(".dropdown-options");
@@ -149,6 +150,7 @@ dropdownTrigger.addEventListener("click", function () {
       if (selectedValue) {
         const dividedMeals = JSON.parse(selectedValue);
         loadMealPlan(dividedMeals);
+        dropdownContainer.classList.toggle("show");
       }
     });
   });

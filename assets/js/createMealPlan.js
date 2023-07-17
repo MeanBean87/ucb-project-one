@@ -99,11 +99,10 @@ const createMealPlan = (dividedMeals, mealObj) => {
   selectMealPlan.addEventListener("change", function () {
     const selectedMeal = this.value;
     const oldList = document.querySelector(".meal-plan-list");
-    
+
     if (oldList) {
       mealPlanContainer.removeChild(oldList);
     }
-
 
     let selection;
 
@@ -130,21 +129,22 @@ const createMealPlan = (dividedMeals, mealObj) => {
 
     if (selection) {
       Object.values(selection.hits).forEach((item) => {
-        const recipeContainer = document.createElement("div");
-        recipeContainer.setAttribute("class", "recipe-container");
+          const recipeContainer = document.createElement("div");
+          recipeContainer.setAttribute("class", "recipe-container");
 
-        const listItem = document.createElement("img");
-        listItem.setAttribute("class", "meal-plan-image");
-        listItem.setAttribute("alt", item.recipe.label);
-        listItem.setAttribute("title", item.recipe.label);
-        listItem.setAttribute("width", "200");
-        listItem.setAttribute("height", "200");
+          const listItem = document.createElement("img");
+          listItem.setAttribute("class", "meal-plan-image");
+          listItem.setAttribute("alt", item.recipe.label);
+          listItem.setAttribute("title", item.recipe.label);
+          listItem.setAttribute("width", "200");
+          listItem.setAttribute("height", "200");
+          listItem.setAttribute("src", item.recipe.image);
 
-        listItem.addEventListener("error", function () {
-          this.src = "http://via.placeholder.com/200x200";
-        });
+          listItem.addEventListener("error", function (event) {
+            event.preventDefault();
+            this.src = "http://via.placeholder.com/200x200";
+          });
 
-        listItem.src = item.recipe.image;
         recipeContainer.appendChild(listItem);
 
         const link = document.createElement("a");
