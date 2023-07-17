@@ -3,11 +3,11 @@
 :root {
   --merienda: "Merienda", cursive;
   --merriweather: "Merriweather Sans", sans-serif;
-  --white: #ffffffff;
-  --celadon: #b6d8a0ff;
-  --pistachio: #88ca5eff;
-  --silver: #a4a5a3ff;
-  --white-2: #ffffffff;
+  --white: #ffffff;
+  --celadon: #b6d8a0;
+  --pistachio: #88ca5e;
+  --silver: #a4a5a3;
+  --dark-grey: #181716;
 }
 
 #home-link { 
@@ -36,6 +36,7 @@
 .dropdown-container {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -48,7 +49,10 @@
   justify-content: center;
   text-align: center;
   padding: 1rem;
-  margin: 1rem;
+  background-color: var(--dark-grey);
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--dark-grey);
 }
 
 .recipe-container a {
@@ -58,4 +62,61 @@
 
 .recipe-container a:hover {
   color: var(--celadon);
+}
+
+.meal-plan-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  grid-gap: 1rem;
+  margin: 1rem;
+}
+
+@media (max-width: 768px) {
+  .meal-plan-list {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+
+  .chart-container {
+    width: 90vw;
+    padding: 0;
+    margin: 0;
+  }
+
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3rem;
+  width: 60vw;
+  background-color: var(--celadon);
+  border-radius: 10px;
+  border: 1px solid var(--dark-grey);
+  box-shadow: 0 0 10px var(--dark-grey);
+}
+
+.select-meal-items {
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--dark-grey);
+  margin: 1rem;
+  text-align: center;
+  background-color: var(--celadon);
+  box-shadow: 0 0 10px var(--dark-grey);
+}
+
+.recipe-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 5px var(--silver);
+}
+
+.nutrition-facts-text {
+  font-family: var(--merriweather);
+  font-size: .75rem;
+  color: var(--silver);
 }

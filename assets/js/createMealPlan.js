@@ -1,17 +1,24 @@
 import { mainContainer } from "./constants.js";
 
 const createMealPlan = (dividedMeals, mealObj) => {
-  const canvasCheck = document.getElementById("meal-plan-chart");
+  const chartContainerCheck = document.querySelector(".chart-container");
 
-  if (canvasCheck) {
-    canvasCheck.remove();
+  if (chartContainerCheck) {
+    chartContainerCheck.remove();
   }
+
+  const chartContainer = document.createElement("div");
+  chartContainer.setAttribute("class", "chart-container");
+  mainContainer.appendChild(chartContainer);
+  chartContainer.setAttribute("style", "display: flex; flex-direction: column; align-items: center;");
+  
+
   console.log(mealObj);
   const canvas = document.createElement("canvas");
   canvas.setAttribute("id", "meal-plan-chart");
   canvas.setAttribute("class", "meal-plan-chart");
 
-  mainContainer.appendChild(canvas);
+  chartContainer.appendChild(canvas);
 
   const labels = [];
   const calories = [];
@@ -69,9 +76,6 @@ const createMealPlan = (dividedMeals, mealObj) => {
     },
   });
 
-  canvas.setAttribute("width", "400");
-  canvas.setAttribute("height", "400");
-
   const mealPlanContainer = document.createElement("div");
   mealPlanContainer.setAttribute("class", "dropdown-container");
   mainContainer.appendChild(mealPlanContainer);
@@ -113,6 +117,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
     }
 
     const unorderedList = document.createElement("ul");
+    unorderedList.setAttribute("class", "meal-plan-list");
 
     if (selection) {
       Object.values(selection.hits).forEach((item) => {
