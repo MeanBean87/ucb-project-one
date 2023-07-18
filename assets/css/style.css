@@ -1,5 +1,3 @@
-
-
 :root {
   --merienda: "Merienda", cursive;
   --merriweather: "Merriweather Sans", sans-serif;
@@ -14,7 +12,7 @@ span {
   font-family: var(--merriweather);
 }
 
-#home-link { 
+#home-link {
   animation: jackInTheBox;
   animation-duration: 2.2s;
 }
@@ -24,8 +22,8 @@ span {
   animation-duration: 5s;
 }
 
-#meal-plan-chart{
- max-width: 50vw;
+#meal-plan-chart {
+  max-width: 50vw;
   max-height: auto;
 }
 
@@ -69,14 +67,14 @@ span {
 
 .meal-plan-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); 
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
   margin: 1rem;
 }
 
 @media (max-width: 768px) {
   .meal-plan-list {
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .chart-container {
@@ -84,7 +82,6 @@ span {
     padding: 0;
     margin: 0;
   }
-
 }
 
 .chart-container {
@@ -120,7 +117,7 @@ span {
 
 .nutrition-facts-text {
   font-family: var(--merriweather);
-  font-size: .75rem;
+  font-size: 0.75rem;
   color: var(--silver);
 }
 
@@ -177,11 +174,9 @@ span {
   text-align: center;
 }
 
-.tdee-questionnaire-height label {
-
 .tdee-questionnaire-height input {
-  margin: .25rem;
-  padding: .25rem;
+  margin: 0.25rem;
+  padding: 0.25rem;
   border-radius: 10px;
   border: 1px solid var(--dark-grey);
   box-shadow: 0 0 10px var(--dark-grey);

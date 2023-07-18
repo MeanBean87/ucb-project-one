@@ -229,7 +229,7 @@ const getFood = async (totalIntakeObj) => {
   console.log(lunchObj);
   console.log(dinnerObj);
   console.log(snacksObj);
-  return {breakfastObj, lunchObj, dinnerObj, snacksObj };
+  return { breakfastObj, lunchObj, dinnerObj, snacksObj };
 };
 
 export {
@@ -239,5 +239,5 @@ export {
   goalOptions,
   activityLevel,
   getFood,
-  fetchExerciseObj, 
+  fetchExerciseObj,
 };
