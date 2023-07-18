@@ -6,7 +6,7 @@ const createTDEEQuestionnaire = () => {
   //Create Form
   const tdeeQuestionnaire = document.createElement("form");
   tdeeQuestionnaire.setAttribute("id", "tdee-questionnaire");
-  tdeeQuestionnaire.setAttribute("class", "tdee-questionnaire rounded-lg mx-32%");
+  tdeeQuestionnaire.setAttribute("class", "tdee-questionnaire flex rounded-lg p-5 m-5");
   tdeeQuestionnaire.setAttribute(
     "style",
     "display: flex; flex-direction: column; align-items: center; background-color: gray;"

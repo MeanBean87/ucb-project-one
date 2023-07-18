@@ -13,6 +13,8 @@ const activityLevel = {
     "Build Muscle",
 ];
 
+const workoutOptions = ["Strength", "Cardio", "Powerlifting"];
+
 const mainContainer = document.getElementById("main-container");
   
-export { activityLevel, goalOptions, mainContainer };
+export { activityLevel, goalOptions, mainContainer, workoutOptions };

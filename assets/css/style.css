@@ -1,5 +1,9 @@
 
 
+
+
+
+
 :root {
   --merienda: "Merienda", cursive;
   --merriweather: "Merriweather Sans", sans-serif;
@@ -9,6 +13,7 @@
   --silver: #a4a5a3;
   --dark-grey: #181716;
 }
+
 
 span {
   font-family: var(--merriweather);
