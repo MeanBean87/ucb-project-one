@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", function () {
     mealContainer.classList.toggle("show");
 
     mealOptions.innerHTML = "";
-
     localStorageKeys.forEach((key) => {
       const option = document.createElement("li");
       const link = document.createElement("a");
@@ -89,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
       link.textContent = key;
       option.appendChild(link);
       mealOptions.appendChild(option);
-
+// Event delegation on this click event
       link.addEventListener("click", function () {
         const selectedKey = this.textContent;
         const selectedValue = localStorage.getItem(selectedKey);
@@ -119,4 +118,5 @@ document.addEventListener("DOMContentLoaded", function () {
     location.reload();
   });
 });
+
 export { startFunction };

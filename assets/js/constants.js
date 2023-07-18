@@ -26,7 +26,6 @@ const goalOptions = [
   "Build Muscle",
 ];
 
-
 export {
   activityLevel,
   goalOptions,
