@@ -300,7 +300,7 @@ const createTDEEQuestionnaire = () => {
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
     const name = document.getElementById("tdee-questionnaire-name").value;
-
+    
     startFunction(
       weight,
       feet,
