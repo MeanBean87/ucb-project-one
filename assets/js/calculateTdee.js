@@ -1,41 +1,4 @@
-const activityLevel = {
-  Sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
-  "Lightly Active": 1.375, // (light exercise 1-3 days / week)
-  "Moderately Active": 1.55, //(moderate exercise 3-5 days / week
-  "Very Active": 1.725, //(heavy exercise 5-7 days / week)
-  "Extremely Active": 1.9, //(very heavy exercise, hard labor job, training 2x / day)
-};
-
-const goalOptions = [
-  "Lose Weight",
-  "Maintain Weight",
-  "Gain Weight",
-  "Build Muscle",
-];
-
-const fetchExerciseObj = async (queryString) => {
-  const apiKey = `KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw`;
-  const url = `https://api.api-ninjas.com/v1/exercises?muscle=${queryString}`;
-
-  try {
-    const response = await fetch(`${url}`, {
-      method: "GET",
-      headers: {
-        "X-Api-Key": `${apiKey}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Error: " + response.status);
-    }
-
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
+import { goalOptions, activityLevel } from "./constants.js";
 
 const fetchEdamamObj = (
   queryMealType,
@@ -239,5 +202,4 @@ export {
   goalOptions,
   activityLevel,
   getFood,
-  fetchExerciseObj, 
 };

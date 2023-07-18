@@ -7,7 +7,7 @@
   <meta name="description" content="Generic description" />
   <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
   <title>NutriDiary</title>
-  <link rel="icon" type="image/png" href="assets/Images/Project Logo.png">
+  <link rel="icon" type="image/png" href="./assets/Images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merienda&family=Merriweather+Sans&display=swap"
@@ -19,64 +19,64 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="body-container" style="background-image: url('./assets/Images/arnold.jpg')">
+<body class="body-container bg-fixed"
+      style="background-image: url('./assets/Images/black_sand.jpg'); background-size: cover">
   <header>
     <nav class="bg-lime-300 p-2">
-      <div class="max-w-4xl mx-auto flex justify-evenly">
-        <div class="flex w-12 h-12">
+      <div class="flex justify-evenly">
+        <div class="flex w-12">
           <a href="#" class="flex items-center space-x-2" id="reload-page">
-            <img src="./assets/Images/logo.png" alt="Project Logo"  />
+            <img src="./assets/Images/title_logo.png" alt="Apple with a flexing arm." class="title-logo" />
           </a>
         </div>
         <div class="flex">
           <a href="#" class="flex items-center space-x-2" id="meal-plan-generator">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path
-                    d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
-              <path
-                    d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
-            </svg>
             <span>Plan Generator</span>
           </a>
         </div>
-        <div class="dropdown-container flex">
-          <button class="dropdown-trigger">
-            <svg class="w-6 h-6 p-1 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 10">
-              <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z"></path>
-          </svg>
+        <div class="dropdown-container flex" id="meal-container">
+          <button class="dropdown-trigger" id="meal-trigger">
+            <svg class="w-6 h-6 p-1 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 16 10">
+              <path
+                d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z">
+              </path>
+            </svg>
             <span>Meal Plans</span>
           </button>
-          <ul class="dropdown-options">
-            <li><a href="#">Option 1</a></li>
-            <li><a href="#">Option 2</a></li>
-            <li><a href="#">Option 3</a></li>
+          <ul class="dropdown-options" id="meal-options">
           </ul>
         </div>
-        <div class="flex">
-          <a href="" class="flex items-center space-x-2" id="workout-plan-generator">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-              <path fill-rule="evenodd"
-                    d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-                    clip-rule="evenodd" />
+        <div class="dropdown-container flex" id="workout-container">
+          <button class="dropdown-trigger" id="workout-trigger">
+            <svg class="w-6 h-6 p-1 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 16 10">
+              <path
+                d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z">
+              </path>
             </svg>
-            <span>Workout</span>
-          </a>
+            <span>Work Out</span>
+          </button>
+          <ul class="dropdown-options" id="workout-options">
+            <li><a href="#" value="strength">Strength</a></li>
+            <li><a href="#" value="cardio">Cardio</a></li>
+            <li><a href="#" value="powerlifting">Powerlifting</a></li>
+          </ul>
         </div>
-      </div>
     </nav>
   </header>
-  <main id="main-container">
-    <div>
-      <div class="max-w-4xl mx-auto flex justify-between">
-        <div class="flex flex-col justify-center items-center">
+  <main id="main-container" class="pb-5">
+    <div class="pt-5">
+      <div class="max-w-4xl mx-auto flex flex-col items-center justify-center sm:flex-row sm:justify-between">
+        <div class="flex flex-col justify-center items-center sm:items-start">
           <h1 class="text-4xl font-extrabold text-center text-white pb-4">NutriDiary</h1>
           <p class="text-center text-white font-bold pb-10">
             A simple meal plan generator. Click the Apple to get started!
           </p>
         </div>
-        <div class="flex flex-col justify-center items-center">
+        <div class="flex flex-col justify-center items-center sm:items-end">
           <a href="#" class="flex items-center space-x-2">
-            <img id="home-link" src="assets/Images/logo.png" alt="Project Logo" class="w-50 h-50" />
+            <img id="home-link" src="assets/Images/logo.png" alt="Apple with a flexing arm." class="w-50 h-50" />
           </a>
         </div>
       </div>

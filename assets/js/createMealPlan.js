@@ -1,7 +1,8 @@
 import { mainContainer } from "./constants.js";
 
+const chartContainerCheck = document.querySelector(".chart-container");
+
 const createMealPlan = (dividedMeals, mealObj) => {
-  const chartContainerCheck = document.querySelector(".chart-container");
 
   if (chartContainerCheck) {
     chartContainerCheck.remove();

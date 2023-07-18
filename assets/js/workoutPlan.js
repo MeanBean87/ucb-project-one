@@ -1,90 +1,71 @@
-import { fetchExerciseObj } from "./script.js";
-const workoutPlanGenerator = document.getElementById("workout-plan-generator");
-const fetchExerciseObj = async (queryString) => {
-  const apiKey = `KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw`;
+import { mainContainer } from "./constants.js";
+
+const fetchExerciseObj = (queryString) => {
   const url = `https://api.api-ninjas.com/v1/exercises?type=${queryString}`;
+  return fetch(url, {
+    method: "GET",
+    headers: {
+      "X-Api-Key": "KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw",
+      "Content-Type": "application/json",
+    },
+  });
+};
 
+const getExercises = async (exerciseType) => {
   try {
-    const response = await fetch(`${url}`, {
-      method: "GET",
-      headers: {
-        "X-Api-Key": `${apiKey}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const exerciseRes = await fetchExerciseObj(exerciseType);
+    return exerciseRes.json();
+  } catch (error) {
+    console.error("An error occurred during getExercises:", error);
+  }
+};
 
-    if (!response.ok) {
-      throw new Error("Error: " + response.status);
+const createExercisePlan = async (selectedExercise) => {
+  const exerciseObj = await getExercises(selectedExercise);
+  console.log(exerciseObj);
+
+  exerciseObj.forEach((exercise) => {
+    const exerciseItem = document.createElement("div");
+    exerciseItem.classList.add(
+      "exercise-item",
+      "bg-gray-800",
+      "p-4",
+      "rounded-md",
+      "m-6",
+      "text-white",
+      "text-center",
+      "color"
+    );
+
+    for (const key in exercise) {
+      const value = exercise[key];
+
+      const exerciseCard = document.createElement("div");
+      exerciseCard.classList.add(
+        "exercise-card",
+        "bg-gray-900",
+        "p-4",
+        "rounded-md",
+        "mb-4"
+      );
+
+      const exerciseProperty = document.createElement("div");
+      exerciseProperty.classList.add("exercise-property");
+
+      const propertyName = document.createElement("span");
+      propertyName.textContent = key + ": ";
+      propertyName.classList.add("font-bold");
+      exerciseProperty.appendChild(propertyName);
+
+      const propertyValue = document.createElement("span");
+      propertyValue.textContent = value;
+      exerciseProperty.appendChild(propertyValue);
+
+      exerciseCard.appendChild(exerciseProperty);
+      exerciseItem.appendChild(exerciseCard);
     }
 
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error("Error:", error);
-  }
+    mainContainer.appendChild(exerciseItem);
+  });
 };
-const createWorkout = () => {
-  const workoutPlan = document.createElement("form");
-  workoutPlan.setAttribute("id", "workout-plan");
-  workoutPlan.setAttribute("class", "workout-plan");
-  workoutPlan.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  mainContainer.appendChild(workoutPlan);
-
-  const workoutPlanTitle = document.createElement("h2");
-  workoutPlanTitle.setAttribute("id", "workout-plan-title");
-  workoutPlanTitle.setAttribute("class", "workout-plan-title text-white");
-  workoutPlanTitle.textContent = "Type of Workout";
-  workoutPlan.appendChild(workoutPlanTitle);
-
-  const workoutPlanDescription = document.createElement("p");
-  workoutPlanDescription.setAttribute("id", "work-out-description");
-  workoutPlanDescription.setAttribute(
-    "class",
-    "work-out-description text-white font-extrabold pb-5"
-  );
-  workoutPlanDescription.textContent =
-    "Please select a workout type that you like!";
-  workoutPlan.appendChild(workoutPlanDescription);
-
-  //Form Workout Input
-  const workoutPlanTypeInput = document.createElement("select");
-  workoutPlanTypeInput.setAttribute("id", "workout-plan-type");
-  workoutPlanTypeInput.setAttribute("class", "workout-plan-type");
-  workoutPlan.appendChild(workoutPlanTypeInput);
-
-  // WorkoutPlan Options
-  const options = ["Strength", "Cardio", "Powerlifting"];
-  for (const option of options) {
-    const typeOption = document.createElement("option");
-    typeOption.setAttribute("value", option);
-    typeOption.textContent = option;
-    workoutPlanTypeInput.appendChild(typeOption);
-  }
-
-  //Form Submit Button
-  const workoutPlanSubmit = document.createElement("button");
-  workoutPlanSubmit.setAttribute("type", "submit");
-  workoutPlanSubmit.setAttribute("id", "workout-plan-submit");
-  workoutPlanSubmit.setAttribute(
-    "class",
-    "workout-plan-submit text-white font-extrabold pb-5"
-  );
-  workoutPlanSubmit.textContent = "Submit";
-  workoutPlan.appendChild(workoutPlanSubmit);
-};
-
-
-createWorkout();
-// eventlistener submit to generate random workout form our workoutPlan Options
-workoutPlanSubmit.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent the form from submitting and refreshing the page
-  fetchExerciseObj(event.target.value);
-});
-workoutPlanGenerator.addEventListener("click", function (event) {
-  event.preventDefault();
-  clearMainContainer();
-  createWorkout();
-});
+export { createExercisePlan };
