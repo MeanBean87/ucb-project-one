@@ -4,117 +4,22 @@ import {
   divideMeals,
   getFood,
 } from "./calculateTdee.js";
+import {
+  mainContainer,
+  homeLink,
+  mealOptions,
+  mealContainer,
+  mealTrigger,
+  workOutContainer,
+  workOutTrigger,
+  workOutOptions,
+  bodyContainer,
+  mealPlanGenerator,
+  localStorageKeys,
+} from "./constants.js";
 import { createTDEEQuestionnaire } from "./tdeeQuestionnaire.js";
 import { createMealPlan } from "./createMealPlan.js";
-import { mainContainer } from "./constants.js";
-
-const bodyContainer = document.querySelector(".body-container");
-const mealPlanGenerator = document.getElementById("meal-plan-generator");
-// const workoutPlanGenerator = document.getElementById("workout-plan-generator");
-const workoutPlanGenerator = document.getElementById("workout-plan-generator");
-const fetchExerciseObj = async (queryString) => {
-  const apiKey = `KUNEX9M6Kwogj/J4y7Ru+A==FZ9J1FNl2AdRV6rw`;
-  const url = `https://api.api-ninjas.com/v1/exercises?type=${queryString}`;
-
-  try {
-    const response = await fetch(`${url}`, {
-      method: "GET",
-      headers: {
-        "X-Api-Key": `${apiKey}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Error: " + response.status);
-    }
-
-    const result = await response.json();
-    console.log(result);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
-
-const createWorkout = () => {
-  const workoutPlan = document.createElement("form");
-  workoutPlan.setAttribute("id", "workout-plan");
-  workoutPlan.setAttribute("class", "workout-plan");
-  workoutPlan.setAttribute(
-    "style",
-    "display: flex; flex-direction: column; align-items: center;"
-  );
-  mainContainer.appendChild(workoutPlan);
-
-
-//   const workoutPlanTitle = document.createElement("h2");
-//   workoutPlanTitle.setAttribute("id", "workout-plan-title");
-//   workoutPlanTitle.setAttribute("class", "workout-plan-title text-white");
-//   workoutPlanTitle.textContent = "Type of Workout";
-//   workoutPlan.appendChild(workoutPlanTitle);
-
-//   const workoutPlanDescription = document.createElement("p");
-//   workoutPlanDescription.setAttribute("id", "work-out-description");
-//   workoutPlanDescription.setAttribute(
-//     "class",
-//     "work-out-description text-white font-extrabold pb-5"
-//   );
-//   workoutPlanDescription.textContent =
-//     "Please select a workout type that you like!";
-//   workoutPlan.appendChild(workoutPlanDescription);
-
-//   //Form Workout Input
-//   const workoutPlanTypeInput = document.createElement("select");
-//   workoutPlanTypeInput.setAttribute("id", "workout-plan-type");
-//   workoutPlanTypeInput.setAttribute("class", "workout-plan-type");
-//   workoutPlan.appendChild(workoutPlanTypeInput);
-
-//   // WorkoutPlan Options
-//   const options = ["Strength", "Cardio", "Powerlifting"];
-//   for (const option of options) {
-//     const typeOption = document.createElement("option");
-//     typeOption.setAttribute("value", option);
-//     typeOption.textContent = option;
-//     workoutPlanTypeInput.appendChild(typeOption);
-//   }
-
-//   //Form Submit Button
-//   const workoutPlanSubmit = document.createElement("button");
-//   workoutPlanSubmit.setAttribute("type", "submit");
-//   workoutPlanSubmit.setAttribute("id", "workout-plan-submit");
-//   workoutPlanSubmit.setAttribute(
-//     "class",
-//     "workout-plan-submit text-white font-extrabold pb-5"
-//   );
-//   workoutPlanSubmit.textContent = "Submit";
-//   workoutPlan.appendChild(workoutPlanSubmit);
-// };
-
-
-createWorkout();
-// eventlistener submit to generate random workout form our workoutPlan Options
-workoutPlanSubmit.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent the form from submitting and refreshing the page
-  fetchExerciseObj(event.target.value);
-});
-
-  const workoutPlanTitle = document.createElement("h2");
-  workoutPlanTitle.setAttribute("id", "workout-plan-title");
-  workoutPlanTitle.setAttribute("class", "workout-plan-title text-white");
-  workoutPlanTitle.textContent = "Type of Workout";
-  workoutPlan.appendChild(workoutPlanTitle);
-};
-
-
-workoutPlanGenerator.addEventListener("click", function (event) {
-  event.preventDefault();
-  clearMainContainer();
-  createWorkout();
-});
-
-//================================================================================================
-
-//TDEE Algorithm==================================================================================
+import { createExercisePlan } from "./workoutPlan.js";
 
 const startFunction = async (
   weight,
@@ -149,73 +54,69 @@ const loadMealPlan = async (dividedMeals) => {
   }
 };
 
-function clearMainContainer() {
-
-  var mainContainer = document.getElementById("main-container");
-
+const clearMainContainer = () => {
   while (mainContainer.firstChild) {
     mainContainer.removeChild(mainContainer.firstChild);
   }
-}
+};
 
-const homeLink = document.getElementById("home-link");
+document.addEventListener("DOMContentLoaded", function () {
+  homeLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    setTimeout(() => {
+      clearMainContainer();
+      createTDEEQuestionnaire();
+    }, 2000);
+  });
 
-homeLink.addEventListener("click", function (event) {
-  event.preventDefault();
-  setTimeout(() => {
+  mealPlanGenerator.addEventListener("click", function (event) {
+    event.preventDefault();
+    bodyContainer.i;
     clearMainContainer();
     createTDEEQuestionnaire();
-  }, 2000);
-});
+  });
 
-mealPlanGenerator.addEventListener("click", function (event) {
-  event.preventDefault();
-  bodyContainer.i;
-  clearMainContainer();
-  createTDEEQuestionnaire();
-});
-//================================================================================================
+  mealTrigger.addEventListener("click", function (event) {
+    event.stopPropagation();
+    mealContainer.classList.toggle("show");
 
+    mealOptions.innerHTML = "";
 
-export { startFunction, fetchExerciseObj };
+    localStorageKeys.forEach((key) => {
+      const option = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = "#" + key;
+      link.textContent = key;
+      option.appendChild(link);
+      mealOptions.appendChild(option);
 
-const dropdownContainer = document.querySelector(".dropdown-container");
-const dropdownTrigger = document.querySelector(".dropdown-trigger");
+      link.addEventListener("click", function () {
+        const selectedKey = this.textContent;
+        const selectedValue = localStorage.getItem(selectedKey);
 
-dropdownTrigger.addEventListener("click", function (event) {
-  event.stopPropagation();
-  dropdownContainer.classList.toggle("show");
-
-  const dropdownOptions = document.querySelector(".dropdown-options");
-  dropdownOptions.innerHTML = "";
-
-  const localStorageKeys = Object.keys(localStorage);
-
-  localStorageKeys.forEach((key) => {
-    const option = document.createElement("li");
-    const link = document.createElement("a");
-    link.href = "#" + key;
-    link.textContent = key;
-    option.appendChild(link);
-    dropdownOptions.appendChild(option);
-
-
-    link.addEventListener("click", function () {
-      const selectedKey = this.textContent;
-      const selectedValue = localStorage.getItem(selectedKey);
-
-      if (selectedValue) {
-        const dividedMeals = JSON.parse(selectedValue);
-        loadMealPlan(dividedMeals);
-        dropdownContainer.classList.toggle("show");
-      }
+        if (selectedValue) {
+          const dividedMeals = JSON.parse(selectedValue);
+          loadMealPlan(dividedMeals);
+          mealContainer.classList.toggle("show");
+        }
+      });
     });
   });
-});
 
-document.getElementById('reload-page').addEventListener('click', function() {
-  location.reload();
-});
+  workOutTrigger.addEventListener("click", function (event) {
+    event.stopPropagation();
+    workOutContainer.classList.toggle("show");
+  });
 
+  workOutOptions.addEventListener("click", function (event) {
+    event.preventDefault();
+    clearMainContainer();
+    createExercisePlan(event.target.getAttribute("value"));
+    workOutContainer.classList.toggle("show");
+  });
+
+  document.getElementById("reload-page").addEventListener("click", function () {
+    location.reload();
+  });
+});
 export { startFunction };
-

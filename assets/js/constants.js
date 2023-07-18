@@ -1,3 +1,16 @@
+const mainContainer = document.getElementById("main-container");
+const homeLink = document.getElementById("home-link");
+const mealOptions = document.getElementById("meal-options");
+const mealTrigger = document.getElementById("meal-trigger");
+const mealContainer = document.getElementById("meal-container");
+const workOutContainer = document.getElementById("workout-container");
+const workOutTrigger = document.getElementById("workout-trigger");
+const workOutOptions = document.getElementById("workout-options");
+const bodyContainer = document.querySelector(".body-container");
+const mealPlanGenerator = document.getElementById("meal-plan-generator");
+
+const localStorageKeys = Object.keys(localStorage);
+
 const activityLevel = {
   Sedentary: 1.2, //(little to no exercise + work a desk job) = 1.2
   "Lightly Active": 1.375, // (light exercise 1-3 days / week)
@@ -13,6 +26,21 @@ const goalOptions = [
   "Build Muscle",
 ];
 
-const mainContainer = document.getElementById("main-container");
 
-export { activityLevel, goalOptions, mainContainer };
+export {
+  activityLevel,
+  goalOptions,
+  mainContainer,
+  homeLink,
+  mealContainer,
+  mealOptions,
+  mealTrigger,
+  workOutContainer,
+  workOutTrigger,
+  workOutOptions,
+  bodyContainer,
+  mealPlanGenerator,
+  localStorageKeys
+};
+
+

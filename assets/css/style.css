@@ -174,10 +174,3 @@ span {
   text-align: center;
 }
 
-.tdee-questionnaire-height input {
-  margin: 0.25rem;
-  padding: 0.25rem;
-  border-radius: 10px;
-  border: 1px solid var(--dark-grey);
-  box-shadow: 0 0 10px var(--dark-grey);
-}
