@@ -12,7 +12,16 @@ span {
   font-family: var(--merriweather);
 }
 
-#home-link { 
+h1{
+  font-family: var(--merriweather);
+}
+
+.welcome-text {
+  font-family: var(--merriweather);
+  color: var(--white);
+}
+
+#home-link {
   animation: jackInTheBox;
   animation-duration: 2.2s;
 }
@@ -20,11 +29,6 @@ span {
 #home-link:active {
   animation: rollOut;
   animation-duration: 5s;
-}
-
-#meal-plan-chart{
- max-width: 50vw;
-  max-height: auto;
 }
 
 #main-container {
@@ -47,18 +51,10 @@ span {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
   padding: 1rem;
-  background-color: var(--dark-grey);
   width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 0 10px var(--dark-grey);
-}
-
-.recipe-container a {
-  text-decoration: none;
-  color: var(--silver);
 }
 
 .recipe-container a:hover {
@@ -67,14 +63,14 @@ span {
 
 .meal-plan-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); 
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 1rem;
   margin: 1rem;
 }
 
 @media (max-width: 768px) {
   .meal-plan-list {
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .chart-container {
@@ -82,24 +78,26 @@ span {
     padding: 0;
     margin: 0;
   }
-
 }
 
 .chart-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
   padding: 1rem;
   margin-top: 3rem;
-  width: 60vw;
-  background-color: var(--celadon);
+  width: 80vw;
+  height: 42.5vh;
+  background-color: var(--white);
   border-radius: 10px;
   border: 1px solid var(--dark-grey);
   box-shadow: 0 0 10px var(--dark-grey);
 }
 
+@media only screen and (max-width: 768px) {
+  .chart-container {
+    width: 85vw;
+    height: 42.5vh;
+  } 
+}
+  
 .select-meal-items {
   border-radius: 10px;
   box-shadow: 0 0 10px var(--dark-grey);
@@ -116,11 +114,6 @@ span {
   box-shadow: 0 0 5px var(--silver);
 }
 
-.nutrition-facts-text {
-  font-family: var(--merriweather);
-  font-size: .75rem;
-  color: var(--silver);
-}
 
 .dropdown-container {
   position: relative;
@@ -167,6 +160,10 @@ span {
   display: block;
 }
 
+.tdee-questionnaire{
+  font-family: var(--merriweather);
+}
+
 .tdee-questionnaire-height {
   display: flex;
   flex-direction: column;
@@ -175,3 +172,6 @@ span {
   text-align: center;
 }
 
+ul li {
+  font-family : var(--merriweather);
+}

@@ -15,12 +15,12 @@ import {
   workOutOptions,
   bodyContainer,
   mealPlanGenerator,
-  localStorageKeys,
 } from "./constants.js";
 import { createTDEEQuestionnaire } from "./tdeeQuestionnaire.js";
 import { createMealPlan } from "./createMealPlan.js";
 import { createExercisePlan } from "./workoutPlan.js";
 
+// this function is called when the user clicks the submit button on the TDEE questionnaire
 const startFunction = async (
   weight,
   feet,
@@ -31,6 +31,7 @@ const startFunction = async (
   goal,
   name
 ) => {
+  // this try block will run the functions to calculate the TDEE, macroNutrients, divideMeals, and getFood
   try {
     let tdee = calculateTDEE(weight, feet, inches, age, gender, activityLevel);
     let macroNutrients = calculateMacroNutrients(tdee, goal);
@@ -44,6 +45,20 @@ const startFunction = async (
   }
 };
 
+function updateLocalStorageKeys() {
+  let localStorageKeys = Object.keys(localStorage);
+  mealOptions.innerHTML = "";
+  localStorageKeys.forEach((key) => {
+    const option = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = "#" + key;
+    link.textContent = key;
+    option.appendChild(link);
+    mealOptions.appendChild(option);
+  });
+}
+
+// loadMealPlan function is called when the user clicks on a meal plan from the mealOptions list
 const loadMealPlan = async (dividedMeals) => {
   try {
     let mealObj = await getFood(dividedMeals);
@@ -53,13 +68,13 @@ const loadMealPlan = async (dividedMeals) => {
     console.error("An error occurred during loadMealPlan:", error);
   }
 };
-
+// clearMainContainer function is called when the user clicks on the homeLink or the mealPlanGenerator button
 const clearMainContainer = () => {
   while (mainContainer.firstChild) {
     mainContainer.removeChild(mainContainer.firstChild);
   }
 };
-
+// when you click on the homeLink (the logo) it will clear the mainContainer and create the TDEE questionnaire
 document.addEventListener("DOMContentLoaded", function () {
   homeLink.addEventListener("click", function (event) {
     event.preventDefault();
@@ -69,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2000);
   });
 
+  // when you click on the mealPlanGenerator button it will clear the mainContainer and create the TDEE questionnaire
   mealPlanGenerator.addEventListener("click", function (event) {
     event.preventDefault();
     bodyContainer.i;
@@ -76,40 +92,37 @@ document.addEventListener("DOMContentLoaded", function () {
     createTDEEQuestionnaire();
   });
 
+  // when you click on the mealTrigger button it will show the mealContainer
   mealTrigger.addEventListener("click", function (event) {
+    // stopPropagation is used to prevent the event from bubbling up to the bodyContainer
     event.stopPropagation();
+    updateLocalStorageKeys();
     mealContainer.classList.toggle("show");
-
-    mealOptions.innerHTML = "";
-
-    localStorageKeys.forEach((key) => {
-      const option = document.createElement("li");
-      const link = document.createElement("a");
-      link.href = "#" + key;
-      link.textContent = key;
-      option.appendChild(link);
-      mealOptions.appendChild(option);
-
-      link.addEventListener("click", function () {
-        const selectedKey = this.textContent;
-        const selectedValue = localStorage.getItem(selectedKey);
-
-        if (selectedValue) {
-          const dividedMeals = JSON.parse(selectedValue);
-          loadMealPlan(dividedMeals);
-          mealContainer.classList.toggle("show");
-        }
-      });
-    });
+    // for each loop to create an option element for each meal option and append it to mealOptions once the user clicks on the mealTrigger button
   });
 
+  // when the user clicks on a meal option it will load the meal plan
+  mealOptions.addEventListener("click", function (event) {
+    event.preventDefault();
+    let selectedKey = event.target.textContent;
+    console.log(selectedKey)
+    let selectedValue = localStorage.getItem(selectedKey);
+    // if statement to check if selectedValue exists and if it does it will load the meal plan
+    if (selectedValue) {
+      let dividedMeals = JSON.parse(selectedValue);
+      loadMealPlan(dividedMeals);
+      mealContainer.classList.toggle("show");
+    }
+  });
+
+  // when you click on the workOutTrigger button it will show the workOutContainer
   workOutTrigger.addEventListener("click", function (event) {
     event.stopPropagation();
     workOutContainer.classList.toggle("show");
   });
 
+  // when you click on the workOutOptions button it will clear the mainContainer and create the exercise plan
   workOutOptions.addEventListener("click", function (event) {
-    event.preventDefault();
     clearMainContainer();
     createExercisePlan(event.target.getAttribute("value"));
     workOutContainer.classList.toggle("show");
@@ -119,4 +132,5 @@ document.addEventListener("DOMContentLoaded", function () {
     location.reload();
   });
 });
+
 export { startFunction };
