@@ -322,7 +322,7 @@ const createTDEEQuestionnaire = () => {
 
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
-    const name = document.getElementById("tdee-questionnaire-name").value;
+
 
     const checkData = validateData(name, age, gender, feet, inches, weight);
 
@@ -342,7 +342,7 @@ const createTDEEQuestionnaire = () => {
         })
         .catch((error) => {
           console.error("An error occurred during startFunction:", error);
-        });
+       });
     }
   });
 };

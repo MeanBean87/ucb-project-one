@@ -1,5 +1,5 @@
 import { mainContainer } from "./constants.js";
-
+// creating fetchExerciseObj function to fetch exercise data from api
 const fetchExerciseObj = (queryString) => {
   const url = `https://api.api-ninjas.com/v1/exercises?type=${queryString}`;
   return fetch(url, {
@@ -10,8 +10,9 @@ const fetchExerciseObj = (queryString) => {
     },
   });
 };
-
+// creating getExercises function
 const getExercises = async (exerciseType) => {
+  // try block to fetch exercise data from api depending on exerciseType
   try {
     const exerciseRes = await fetchExerciseObj(exerciseType);
     return exerciseRes.json();
@@ -19,11 +20,11 @@ const getExercises = async (exerciseType) => {
     console.error("An error occurred during getExercises:", error);
   }
 };
-
+// creating createExercisePlan function with parameter of selectedExercise
 const createExercisePlan = async (selectedExercise) => {
   const exerciseObj = await getExercises(selectedExercise);
   console.log(exerciseObj);
-
+// styling forEach exerciseObj
   exerciseObj.forEach((exercise) => {
     const exerciseItem = document.createElement("div");
     exerciseItem.classList.add(
@@ -36,7 +37,7 @@ const createExercisePlan = async (selectedExercise) => {
       "text-center",
       "color"
     );
-
+      //accessing each key and value in exerciseObj
     for (const key in exercise) {
       const value = exercise[key];
 
