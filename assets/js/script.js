@@ -102,12 +102,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // when the user clicks on a meal option it will load the meal plan
-  mealOptions.addEventListener("click", function () {
-    const selectedKey = this.textContent;
-    const selectedValue = localStorage.getItem(selectedKey);
+  mealOptions.addEventListener("click", function (event) {
+    event.preventDefault();
+    let selectedKey = event.target.textContent;
+    console.log(selectedKey)
+    let selectedValue = localStorage.getItem(selectedKey);
     // if statement to check if selectedValue exists and if it does it will load the meal plan
     if (selectedValue) {
-      const dividedMeals = JSON.parse(selectedValue);
+      let dividedMeals = JSON.parse(selectedValue);
       loadMealPlan(dividedMeals);
       mealContainer.classList.toggle("show");
     }
@@ -121,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // when you click on the workOutOptions button it will clear the mainContainer and create the exercise plan
   workOutOptions.addEventListener("click", function (event) {
-    event.preventDefault();
     clearMainContainer();
     createExercisePlan(event.target.getAttribute("value"));
     workOutContainer.classList.toggle("show");

@@ -34,7 +34,7 @@
             <span>Plan Generator</span>
           </a>
         </div>
-        <div class="dropdown-container flex" id="meal-container">
+        <div class="dropdown-container flex justify-center" id="meal-container">
           <button class="dropdown-trigger" id="meal-trigger">
             <svg class="w-6 h-6 p-1 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor" viewBox="0 0 16 10">
@@ -46,10 +46,10 @@
           </button>
 
           <!-- may need add event listener to each ul and use event delegation -->
-          <ul class="dropdown-options" id="meal-options">
+          <ul class="dropdown-options bg-lime-100 w-[10rem] border-2 border-black" id="meal-options">
           </ul>
         </div>
-        <div class="dropdown-container flex" id="workout-container">
+        <div class="dropdown-container flex justify-center" id="workout-container">
           <button class="dropdown-trigger" id="workout-trigger">
             <svg class="w-6 h-6 p-1 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor" viewBox="0 0 16 10">
@@ -59,7 +59,7 @@
             </svg>
             <span>Work Out</span>
           </button>
-          <ul class="dropdown-options" id="workout-options">
+          <ul class="dropdown-options bg-lime-100 w-[10rem] border-2 border-black" id="workout-options">
             <li><a href="#" value="strength">Strength</a></li>
             <li><a href="#" value="cardio">Cardio</a></li>
             <li><a href="#" value="powerlifting">Powerlifting</a></li>
@@ -72,7 +72,7 @@
       <div class="max-w-4xl mx-auto flex flex-col justify-center sm:flex-row sm:justify-between">
         <div class="flex flex-col justify-center items-center sm:items-start">
           <h1 class="text-4xl font-extrabold text-center text-white pb-4 pl-4">NutriDiary</h1>
-          <p class="text-center text-white font-bold pb-10">
+          <p class="text-center text-white font-bold pb-10 welcome-text">
             A simple meal plan generator. Click the Apple to get started!
           </p>
         </div>

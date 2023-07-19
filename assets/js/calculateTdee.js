@@ -18,6 +18,7 @@ const fetchEdamamObj = (
   let url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611&app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}&nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
   return fetch(url);
 };
+
 // creating convertImpHeightToBaseInches function
 const convertImpHeightToBaseInches = (feet, inches) => {
   // returning feet * 12 + inches to turn feet and inches into inches
@@ -73,6 +74,7 @@ const calculateTDEE = (
     );
   }
 };
+
 // creating calculateMacroNutrients function with parameters of tdee and goal to calculate macroNutrients
 const calculateMacroNutrients = (tdee, goal) => {
   let carbohydrates;
