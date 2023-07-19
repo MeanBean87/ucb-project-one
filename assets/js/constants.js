@@ -39,7 +39,5 @@ export {
   workOutOptions,
   bodyContainer,
   mealPlanGenerator,
-  localStorageKeys
+  localStorageKeys,
 };
-
-

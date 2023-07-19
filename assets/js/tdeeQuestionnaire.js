@@ -1,28 +1,11 @@
-import { activityLevel, goalOptions, mainContainer } from "./constants.js";
+import {
+  activityLevel,
+  goalOptions,
+  mainContainer,
+  mealOptions,
+} from "./constants.js";
 import { startFunction } from "./script.js";
 import { validateData } from "./inputValidation.js";
-
-function updateLocalStorageKeys() {
-  localStorageKeys.forEach((key) => {
-    const option = document.createElement("li");
-    const link = document.createElement("a");
-    link.href = "#" + key;
-    link.textContent = key;
-    option.appendChild(link);
-    mealOptions.appendChild(option);
-
-    link.addEventListener("click", function () {
-      const selectedKey = this.textContent;
-      const selectedValue = localStorage.getItem(selectedKey);
-
-      if (selectedValue) {
-        const dividedMeals = JSON.parse(selectedValue);
-        loadMealPlan(dividedMeals);
-        mealContainer.classList.toggle("show");
-      }
-    });
-  });
-}
 
 const createTDEEQuestionnaire = () => {
   //Create Form
@@ -300,7 +283,7 @@ const createTDEEQuestionnaire = () => {
 
   //Form Submit Event Listener
   tdeeQuestionnaire.addEventListener("submit", function (event) {
-    event.preventDefault()
+    event.preventDefault();
     const age = parseInt(
       document.getElementById("tdee-questionnaire-age").value
     );
@@ -322,7 +305,7 @@ const createTDEEQuestionnaire = () => {
 
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
-
+    const name = document.getElementById("tdee-questionnaire-name").value;
 
     const checkData = validateData(name, age, gender, feet, inches, weight);
 
@@ -342,9 +325,9 @@ const createTDEEQuestionnaire = () => {
         })
         .catch((error) => {
           console.error("An error occurred during startFunction:", error);
-       });
+        });
     }
   });
 };
 
-export { createTDEEQuestionnaire, updateLocalStorageKeys };
+export { createTDEEQuestionnaire };
