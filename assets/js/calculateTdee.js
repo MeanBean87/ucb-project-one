@@ -143,12 +143,15 @@ const divideMeals = (tdee, macroNutrients) => {
   return meals;
 };
 
+// We declare this funciton "getFood" that takes one argument called "totalIntakeObj"
 const getFood = async (totalIntakeObj) => {
+//  
   let breakfastObj;
   let lunchObj;
   let dinnerObj;
   let snacksObj;
 
+// Try block allows us to handle errors that may occurduring 
   try {
     const [breakfastRes, lunchRes, dinnerRes, snacksRes] = await Promise.all([
       fetchEdamamObj(
