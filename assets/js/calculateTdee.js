@@ -168,12 +168,12 @@ const divideMeals = (tdee, macroNutrients) => {
 };
 // creating getFood function with parameter of totalIntakeObj which is the meals object from divideMeals function to get food from Edamam API
 const getFood = async (totalIntakeObj) => {
+//  
   let breakfastObj;
   let lunchObj;
   let dinnerObj;
   let snacksObj;
 
-  // we are fetching from Edamam API with parameters of mealType, calories, carbohydrates, protein, fat
   try {
     // we are using Promise.all to fetch all 4 meals at the same time
     // LoLoMo
