@@ -14,7 +14,7 @@ The web application provides an intuitive and user-friendly interface where user
 
 The Meal Planner MVP aims to simplify the meal planning process and help users make informed choices about their daily nutrition. It provides a foundation for further development, allowing for potential enhancements such as user registration, saving and tracking meal plans. This project was made during the Full Stack Web Development Bootcamp and UC-Berkley Extension.
 
-![Site Landing Page](./assets/images/NutriDiary.png)
+![Site Landing Page](./assets/Images/NutriDiary.png)
 
 ## Technology Used
 
