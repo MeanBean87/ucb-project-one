@@ -14,8 +14,9 @@ const fetchEdamamObj = (
   let carbohydrates = queryCarbs;
   let protein = queryProtein;
   let mealType = queryMealType;
+
   // setting url for fetchEdamamObj function
-  let url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611&app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}&nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
+  let url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611&app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}&nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}&dishType=Main%20course`;
   return fetch(url);
 };
 

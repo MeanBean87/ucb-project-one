@@ -26,6 +26,29 @@ const goalOptions = [
   "Build Muscle",
 ];
 
+const categories = [
+  "biscuits and cookies",
+  "bread",
+  "desserts",
+  "egg",
+  "main course",
+  "pancake",
+  "pasta",
+  "pastry",
+  "pies and tarts",
+  "pizza",
+  "preps",
+  "preserve",
+  "salad",
+  "sandwiches",
+  "seafood",
+  "side dish",
+  "soup",
+  "special occasions",
+  "starter",
+  "sweets"
+];
+
 export {
   activityLevel,
   goalOptions,
@@ -40,4 +63,5 @@ export {
   bodyContainer,
   mealPlanGenerator,
   localStorageKeys,
+  categories
 };
