@@ -85,7 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
     event.stopPropagation();
     mealContainer.classList.toggle("show");
     mealOptions.innerHTML = "";
+
     // for each loop to create an option element for each meal option and append it to mealOptions once the user clicks on the mealTrigger button
+
     localStorageKeys.forEach((key) => {
       const option = document.createElement("li");
       const link = document.createElement("a");
@@ -93,7 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
       link.textContent = key;
       option.appendChild(link);
       mealOptions.appendChild(option);
+
+// Event delegation on this click event
+
       // when the user clicks on a meal option it will load the meal plan
+
       link.addEventListener("click", function () {
         const selectedKey = this.textContent;
         const selectedValue = localStorage.getItem(selectedKey);
@@ -123,4 +129,5 @@ document.addEventListener("DOMContentLoaded", function () {
     location.reload();
   });
 });
+
 export { startFunction };

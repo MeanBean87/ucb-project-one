@@ -1,5 +1,28 @@
 import { activityLevel, goalOptions, mainContainer } from "./constants.js";
 import { startFunction } from "./script.js";
+import { validateData } from "./inputValidation.js";
+
+function updateLocalStorageKeys() {
+  localStorageKeys.forEach((key) => {
+    const option = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = "#" + key;
+    link.textContent = key;
+    option.appendChild(link);
+    mealOptions.appendChild(option);
+
+    link.addEventListener("click", function () {
+      const selectedKey = this.textContent;
+      const selectedValue = localStorage.getItem(selectedKey);
+
+      if (selectedValue) {
+        const dividedMeals = JSON.parse(selectedValue);
+        loadMealPlan(dividedMeals);
+        mealContainer.classList.toggle("show");
+      }
+    });
+  });
+}
 
 const createTDEEQuestionnaire = () => {
   //Create Form
@@ -39,6 +62,11 @@ const createTDEEQuestionnaire = () => {
     "Please answer the following questions to calculate your TDEE:";
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireDescription);
 
+  const tdeeFormErrors = document.createElement("div");
+  tdeeFormErrors.setAttribute("id", "tdee-form-errors");
+  tdeeFormErrors.setAttribute("class", "flex flex-col text-center");
+  tdeeQuestionnaire.appendChild(tdeeFormErrors);
+
   //Form Name Input Label
   const tdeeQuestionnaireName = document.createElement("label");
   tdeeQuestionnaireName.setAttribute("for", "tdee-questionnaire-name");
@@ -60,7 +88,6 @@ const createTDEEQuestionnaire = () => {
   );
   tdeeQuestionnaireNameInput.setAttribute("name", "tdee-questionnaire-name");
   tdeeQuestionnaireNameInput.setAttribute("placeholder", "Enter your name");
-  tdeeQuestionnaireNameInput.required = true;
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireNameInput);
 
   //Form Age Input Label
@@ -83,7 +110,6 @@ const createTDEEQuestionnaire = () => {
     "tdee-questionnaire-age placeholder-black text-center rounded"
   );
   tdeeQuestionnaireAgeInput.setAttribute("placeholder", "Age in years");
-  tdeeQuestionnaireAgeInput.required = true;
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireAgeInput);
 
   //Form Gender Input Label
@@ -154,7 +180,6 @@ const createTDEEQuestionnaire = () => {
     "tdee-questionnaire-feet placeholder-black my-1 text-center rounded"
   );
   tdeeQuestionnaireFeetInput.setAttribute("placeholder", "Feet");
-  tdeeQuestionnaireFeetInput.required = true;
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireFeetInput);
 
   //Form Inches Input
@@ -166,7 +191,6 @@ const createTDEEQuestionnaire = () => {
     "tdee-questionnaire-inches placeholder-black text-center rounded"
   );
   tdeeQuestionnaireInchesInput.setAttribute("placeholder", "Inches");
-  tdeeQuestionnaireInchesInput.required = true;
   tdeeQuestionnaireHeightInput.appendChild(tdeeQuestionnaireInchesInput);
 
   //Form Weight Input Label
@@ -189,7 +213,6 @@ const createTDEEQuestionnaire = () => {
     "tdee-questionnaire-weight placeholder-black text-center rounded"
   );
   tdeeQuestionnaireWeightInput.setAttribute("placeholder", "Weight in lbs");
-  tdeeQuestionnaireWeightInput.required = true;
   tdeeQuestionnaire.appendChild(tdeeQuestionnaireWeightInput);
 
   //Form Activity Level Input Label
@@ -277,7 +300,7 @@ const createTDEEQuestionnaire = () => {
 
   //Form Submit Event Listener
   tdeeQuestionnaire.addEventListener("submit", function (event) {
-    event.preventDefault();
+    event.preventDefault()
     const age = parseInt(
       document.getElementById("tdee-questionnaire-age").value
     );
@@ -299,25 +322,29 @@ const createTDEEQuestionnaire = () => {
 
     const goal = document.getElementById("meal-questionnaire-calories").value;
 
-    const name = document.getElementById("tdee-questionnaire-name").value;
-    
-    startFunction(
-      weight,
-      feet,
-      inches,
-      age,
-      gender,
-      activityLevelEl,
-      goal,
-      name
-    )
-      .then(() => {
-        console.log("startFunction successfully completed");
-      })
-      .catch((error) => {
-        console.error("An error occurred during startFunction:", error);
-      });
+
+
+    const checkData = validateData(name, age, gender, feet, inches, weight);
+
+    if (checkData) {
+      startFunction(
+        weight,
+        feet,
+        inches,
+        age,
+        gender,
+        activityLevelEl,
+        goal,
+        name
+      )
+        .then(() => {
+          console.log("startFunction successfully completed");
+        })
+        .catch((error) => {
+          console.error("An error occurred during startFunction:", error);
+       });
+    }
   });
 };
 
-export { createTDEEQuestionnaire };
+export { createTDEEQuestionnaire, updateLocalStorageKeys };

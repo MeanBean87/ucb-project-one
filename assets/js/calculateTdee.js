@@ -172,6 +172,8 @@ const getFood = async (totalIntakeObj) => {
   // we are fetching from Edamam API with parameters of mealType, calories, carbohydrates, protein, fat
   try {
     // we are using Promise.all to fetch all 4 meals at the same time
+    // LoLoMo
+    // ObObRe
     const [breakfastRes, lunchRes, dinnerRes, snacksRes] = await Promise.all([
       // we are calling fetchEdamamObj function with parameters of mealType, calories, carbohydrates, protein, fat to get food from Edamam API for each meal
       fetchEdamamObj(
@@ -215,7 +217,7 @@ const getFood = async (totalIntakeObj) => {
   console.log(lunchObj);
   console.log(dinnerObj);
   console.log(snacksObj);
-  return {breakfastObj, lunchObj, dinnerObj, snacksObj };
+  return { breakfastObj, lunchObj, dinnerObj, snacksObj };
 };
 // exporting calculateTDEE, calculateMacroNutrients, divideMeals, goalOptions, activityLevel, getFood
 export {
