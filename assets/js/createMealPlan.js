@@ -21,7 +21,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
   const canvas = document.createElement("canvas");
   canvas.setAttribute("id", "meal-plan-chart");
   canvas.setAttribute("class", "meal-plan-chart");
-  canvas.setAttribute("class", "bg-lime-300 max-w-prose")
+  canvas.setAttribute("class", "bg-lime-100 max-w-prose")
 
   chartContainer.appendChild(canvas);
   // creating labels, calories, carbohydrates, protein, fat arrays to later be used in Chart.js to create a bar chart
