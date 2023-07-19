@@ -14,10 +14,11 @@ const fetchEdamamObj = (
   let carbohydrates = queryCarbs;
   let protein = queryProtein;
   let mealType = queryMealType;
-// setting url for fetchEdamamObj function
+  // setting url for fetchEdamamObj function
   let url = `https://api.edamam.com/api/recipes/v2?type=public&app_id=ea339611&app_key=40023aebe29c8284c820e11ded63b70f&mealType=${mealType}&calories=${calories}&nutrients%5BCHOCDF.net%5D=${carbohydrates}&nutrients%5BFAT%5D=${fat}&nutrients%5BPROCNT%5D=${protein}`;
   return fetch(url);
 };
+
 // creating convertImpHeightToBaseInches function
 const convertImpHeightToBaseInches = (feet, inches) => {
   // returning feet * 12 + inches to turn feet and inches into inches
@@ -59,7 +60,7 @@ const calculateTDEE = (
     // calling convertImpHeightToBaseInches function
     convertImpHeightToBaseInches(feet, inches)
   );
-// if gender is female then return calculateFemaleBMR function and multiply by activityLevel which calculates TDEE
+  // if gender is female then return calculateFemaleBMR function and multiply by activityLevel which calculates TDEE
   if (gender === "Female") {
     return (
       calculateFemaleBMR(convertedWeight, convertedHeight, age) *
@@ -73,6 +74,7 @@ const calculateTDEE = (
     );
   }
 };
+
 // creating calculateMacroNutrients function with parameters of tdee and goal to calculate macroNutrients
 const calculateMacroNutrients = (tdee, goal) => {
   let carbohydrates;
@@ -83,23 +85,23 @@ const calculateMacroNutrients = (tdee, goal) => {
     carbohydrates = 0.4;
     protein = 0.4;
     fat = 0.2;
-  // if goal is gain weight then carbohydrates = 0.5, protein = 0.3, fat = 0.2
+    // if goal is gain weight then carbohydrates = 0.5, protein = 0.3, fat = 0.2
   } else if (goal === "Gain Weight") {
     carbohydrates = 0.5;
     protein = 0.3;
     fat = 0.2;
-  // if goal is build muscle then carbohydrates = 0.45, protein = 0.4, fat = 0.15
+    // if goal is build muscle then carbohydrates = 0.45, protein = 0.4, fat = 0.15
   } else if (goal === "Build Muscle") {
     carbohydrates = 0.45;
     protein = 0.4;
     fat = 0.15;
-  //if goal is to maintain weight then carbohydrates = 0.45, protein = 0.3, fat = 0.25
+    //if goal is to maintain weight then carbohydrates = 0.45, protein = 0.3, fat = 0.25
   } else {
     carbohydrates = 0.45;
     protein = 0.3;
     fat = 0.25;
   }
-// if tdee is greater than or equal to 2500 then carbohydrates += 0.05, fat -= 0.05, for health purposes based on https://www.healthline.com/nutrition/how-many-carbs-per-day-to-lose-weight
+  // if tdee is greater than or equal to 2500 then carbohydrates += 0.05, fat -= 0.05, for health purposes based on https://www.healthline.com/nutrition/how-many-carbs-per-day-to-lose-weight
   if (tdee >= 2500) {
     carbohydrates += 0.05;
     fat -= 0.05;
@@ -107,22 +109,23 @@ const calculateMacroNutrients = (tdee, goal) => {
     carbohydrates -= 0.05;
     fat += 0.05;
   }
-// returning our optimized macroNutrients based on tdee and goal
+  // returning our optimized macroNutrients based on tdee and goal
   return { carbohydrates: carbohydrates, protein: protein, fat: fat };
 };
 // creating divideMeals function with parameters of tdee and macroNutrients to divide meals into breakfast, lunch, dinner, and snacks! yummy!
 const divideMeals = (tdee, macroNutrients) => {
   // setting variables for divideMeals function
+  console.log(tdee);
   const { carbohydrates, protein, fat } = macroNutrients;
-// setting variables for divideMeals function by rounding tdee * carbohydrates, tdee * protein, tdee * fat to nearest whole number which gets us calories from carbohydrates, protein, and fat
+  // setting variables for divideMeals function by rounding tdee * carbohydrates, tdee * protein, tdee * fat to nearest whole number which gets us calories from carbohydrates, protein, and fat
   const caloriesFromCarbohydrates = Math.round(tdee * carbohydrates);
   const caloriesFromProtein = Math.round(tdee * protein);
   const caloriesFromFat = Math.round(tdee * fat);
-// from the calories from carbohydrates, protein, and fat, we divide by 4 to get grams of carbohydrates and protein, and divide by 9 to get grams of fat
+  // from the calories from carbohydrates, protein, and fat, we divide by 4 to get grams of carbohydrates and protein, and divide by 9 to get grams of fat
   const gramsOfCarbohydrates = Math.round(caloriesFromCarbohydrates / 4);
   const gramsOfProtein = Math.round(caloriesFromProtein / 4);
   const gramsOfFat = Math.round(caloriesFromFat / 9);
-// from the grams, we multiply by 0.25, 0.35, 0.3, 0.1 to get calories for each meal
+  // from the grams, we multiply by 0.25, 0.35, 0.3, 0.1 to get calories for each meal
   const breakfastCalories = Math.round(tdee * 0.25);
   const lunchCalories = Math.round(tdee * 0.35);
   const dinnerCalories = Math.round(tdee * 0.3);

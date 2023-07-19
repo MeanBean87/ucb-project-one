@@ -9,7 +9,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
   }
   // creating chartContainer div and appending it to mainContainer
   const chartContainer = document.createElement("div");
-  chartContainer.setAttribute("class", "chart-container");
+  chartContainer.setAttribute("class", "chart-container max-w-prose");
   mainContainer.appendChild(chartContainer);
   chartContainer.setAttribute(
     "style",
@@ -21,6 +21,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
   const canvas = document.createElement("canvas");
   canvas.setAttribute("id", "meal-plan-chart");
   canvas.setAttribute("class", "meal-plan-chart");
+  canvas.setAttribute("class", "max-w-prose")
 
   chartContainer.appendChild(canvas);
   // creating labels, calories, carbohydrates, protein, fat arrays to later be used in Chart.js to create a bar chart
@@ -72,7 +73,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
     },
     // options for chart to be responsive and stacked
     options: {
-      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           stacked: true,
@@ -86,12 +87,19 @@ const createMealPlan = (dividedMeals, mealObj) => {
     },
   });
   // creating mealPlanContainer div and appending it to mainContainer
+  const dropDownTitle = document.createElement("h2");
+  dropDownTitle.setAttribute("class", "text-3xl text-lime-300");
+  dropDownTitle.setAttribute("class", "text-lime-300 pt-4");
+  dropDownTitle.setAttribute("style", "font-family: Merriweather Sans");
+  dropDownTitle.textContent = "Select a Meal from the options below.";
+  mainContainer.appendChild(dropDownTitle);
+
   const mealPlanContainer = document.createElement("div");
-  mealPlanContainer.setAttribute("class", "dropdown-container");
+  mealPlanContainer.setAttribute("class", "dropdown-container", "max-w-prose");
   mainContainer.appendChild(mealPlanContainer);
   // creating selectMealPlan select element and appending it to mealPlanContainer
   const selectMealPlan = document.createElement("select");
-  selectMealPlan.setAttribute("class", "select-meal-items");
+  selectMealPlan.setAttribute("class", "select-meal-items", "max-w-prose");
   selectMealPlan.setAttribute("id", "select-meal-items");
   mealPlanContainer.appendChild(selectMealPlan);
   // options for selectMealPlan, which is the meal options of Breakfast, Lunch, Dinner, Snacks
@@ -161,6 +169,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
         link.href = item.recipe.url;
         link.target = "_blank";
         link.textContent = item.recipe.label;
+        link.setAttribute("class", "text-lime-300");
         // appending link to recipeContainer
         recipeContainer.appendChild(link);
         // creating nutritionFacts div to hold the nutrition facts of each recipe
@@ -178,7 +187,7 @@ const createMealPlan = (dividedMeals, mealObj) => {
         )} | Fat: ${Math.round(
           item.recipe.totalNutrients.FAT.quantity / item.recipe.yield
         )}`;
-        nutritionFactsText.setAttribute("class", "nutrition-facts-text");
+        nutritionFactsText.setAttribute("class", "nutrition-facts-text", "text-lime-300");
         nutritionFactsText.setAttribute("style", "color: white;");
         recipeContainer.appendChild(nutritionFactsText);
 
