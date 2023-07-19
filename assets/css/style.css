@@ -21,7 +21,7 @@ h1{
   color: var(--white);
 }
 
-#home-link {
+#home-link, canvas {
   animation: jackInTheBox;
   animation-duration: 2.2s;
 }
