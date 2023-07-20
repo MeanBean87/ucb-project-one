@@ -18,7 +18,7 @@ NutriDiary aims to simplify the meal planning process and help users make inform
 
 ![Site Landing Page](./assets/Images/NutriDiary.png)
 
-###Mobile Landing Page
+### Mobile Landing Page
 ![Site Landing Page](./assets/Images/nutridiary-mobile.png)
 
 ## Technology Used
