@@ -112,24 +112,19 @@ const getFood = async (totalIntakeObj) => {
 
 1. **Asynchronous Data Fetching with `fetch()`:** The `fetch()` function in JavaScript allows you to make asynchronous network requests to APIs and retrieve data. It returns a Promise that resolves to the response object, which can be handled using `.then()` and `.catch()` methods. Understanding how to use `fetch()` enables you to fetch data from external APIs and incorporate it into your web app.
 2. **Utilizing `animate.css` for Animation Effects:** `animate.css` is a popular CSS animation library that provides a wide range of pre-defined animation effects. By utilizing `animate.css`, you can easily apply animations to elements on your web app, enhancing the visual experience and providing engaging user interactions.
-   Here is a live demo of Animate.CSS being executed on our application!
    ![Animate.CSS](./assets/Images/ANIMATE%20CSS%20EXAMPLE.gif)
-   Here is the code that demonstrates our demo!
    ![Animate.CSS](./assets/Images/Animate%20CSS%20Code.png)
-3. **Streamlining Styling with `tailwindcss`:** `tailwindcss` is a utility-first CSS framework that enables you to rapidly build user interfaces by composing utility classes. It provides a wide range of pre-defined classes for styling elements, allowing you to create responsive and visually appealing designs with minimal custom CSS. Learning `tailwindcss` helps in streamlining the styling process and maintaining consistency in your web app.
+4. **Streamlining Styling with `tailwindcss`:** `tailwindcss` is a utility-first CSS framework that enables you to rapidly build user interfaces by composing utility classes. It provides a wide range of pre-defined classes for styling elements, allowing you to create responsive and visually appealing designs with minimal custom CSS. Learning `tailwindcss` helps in streamlining the styling process and maintaining consistency in your web app.
    Here is an example of our code demonstrating Tailwind.CSS framework!
    ![Tailwind.CSS](./assets/Images/Tailwind%20HTML.png)
    ![Tailwind.CSS](./assets/Images/Tailwind%20css.png)
-4. **Working with APIs and Data Integration:** Integrating APIs into your web app involves understanding the API documentation, including available endpoints, request parameters, and response formats. It requires constructing API requests, handling responses, and extracting relevant data. By effectively working with APIs, you can enrich your web app with external data sources, such as retrieving recipe data from the Edamam API or incorporating other APIs from platforms like API Ninjas.
+5. **Working with APIs and Data Integration:** Integrating APIs into your web app involves understanding the API documentation, including available endpoints, request parameters, and response formats. It requires constructing API requests, handling responses, and extracting relevant data. By effectively working with APIs, you can enrich your web app with external data sources, such as retrieving recipe data from the Edamam API or incorporating other APIs from platforms like API Ninjas.
    Here are some examples of our code fetching data from Edamam API!
    ![Edamam.API](./assets/Images/FETCH%20API%20EDAMAM.png)
    ![Edamam.API](./assets/Images/FETCH%20API%20E2%20(2).png)
-   Here is a live demo of our application deploying information from Edamam API to our application
    ![Edamam.API](./assets/Images/User%20Story%202%20Demo.gif)
-5. **Creating Interactive Charts with Chart.js:** Chart.js is a JavaScript charting library that allows you to create various types of interactive and visually appealing charts and graphs. Learning Chart.js enables you to present data in a more intuitive and visually appealing manner, providing insights and enhancing the user experience.
-   Here is the code than demonstrats us using Chart.Js
+6. **Creating Interactive Charts with Chart.js:** Chart.js is a JavaScript charting library that allows you to create various types of interactive and visually appealing charts and graphs. Learning Chart.js enables you to present data in a more intuitive and visually appealing manner, providing insights and enhancing the user experience.
    ![Chart.js](./assets/Images/Chart.js.png)
-   Here is a live demo of our Chart.Js being delployed on our website!
    ![Chart.js](./assets/Images/Chart%20Demo.gif)
    These learning points provide a foundation for understanding how to make asynchronous data requests with `fetch()`, incorporate animation effects using `animate.css`, streamline styling with `tailwindcss`, work with APIs and integrate external data, and create interactive charts with Chart.js.
 
